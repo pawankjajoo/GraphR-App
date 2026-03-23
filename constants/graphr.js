@@ -1,9 +1,7 @@
 /**
  * constants/graphr.js
  * ═══════════════════════════════════════════════════════════════════════════════
- *
  * GraphR App Constants & Configuration
- *
  * Central location for all app-wide constants:
  * • Color palette (education blue, success green, dark mode)
  * • Calculator layouts & modes
@@ -11,43 +9,37 @@
  * • Utility functions for grading, formatting
  * • Subscription tier definitions
  * • Calculator button configurations
- *
  * Keep everything synchronized. One source of truth.
- *
  * Designed by Pawan K Jajoo
  */
 
-// ─────────────────────────────────────────────────────────────────────────────
 // COLOR PALETTE
-// Education-focused design: blue (#1a73e8), green (#0f9d58), dark backgrounds
-// ─────────────────────────────────────────────────────────────────────────────
+// Education-focused design: blue (), green (), dark backgrounds
 export const COLORS = {
   // Primary branding
-  primary: "#1a73e8",           // Education blue - primary CTA, highlights
-  success: "#0f9d58",           // Success green - grades, achievements
-  warning: "#f9ab00",           // Warning yellow
-  error: "#d33b27",             // Error red
+  primary: "",           // Education blue - primary CTA, highlights
+  success: "",           // Success green - grades, achievements
+  warning: "",           // Warning yellow
+  error: "",             // Error red
 
   // Backgrounds
-  dark: "#1a1a1a",              // Dark background
-  darkSecondary: "#252525",     // Secondary dark surface
-  darkTertiary: "#323232",      // Tertiary dark surface
+  dark: "",              // Dark background
+  darkSecondary: "",     // Secondary dark surface
+  darkTertiary: "",      // Tertiary dark surface
 
   // Text
-  text: "#ffffff",              // Primary text
-  textSecondary: "#b3b3b3",     // Secondary text
-  textMuted: "#808080",         // Muted text
+  text: "",              // Primary text
+  textSecondary: "",     // Secondary text
+  textMuted: "",         // Muted text
 
   // UI elements
-  border: "#373737",            // Border color
-  input: "#2a2a2a",             // Input background
+  border: "",            // Border color
+  input: "",             // Input background
   shadow: "rgba(0, 0, 0, 0.3)", // Shadow color
 };
 
-// ─────────────────────────────────────────────────────────────────────────────
 // SUBSCRIPTION TIERS
 // Free, Pro, School (district-level)
-// ─────────────────────────────────────────────────────────────────────────────
 export const SUBSCRIPTION_TIERS = {
   free: {
     name: "Free",
@@ -78,10 +70,8 @@ export const SUBSCRIPTION_TIERS = {
   },
 };
 
-// ─────────────────────────────────────────────────────────────────────────────
 // CALCULATOR LAYOUTS
 // Basic: 12 buttons, Scientific: 20+ buttons, Graphing: equation input + graph
-// ─────────────────────────────────────────────────────────────────────────────
 export const CALCULATOR_BUTTONS = {
   basic: [
     ["7", "8", "9", "/"],
@@ -100,10 +90,8 @@ export const CALCULATOR_BUTTONS = {
   ],
 };
 
-// ─────────────────────────────────────────────────────────────────────────────
 // DEMO CLASSROOMS
 // Sample data for development and demos
-// ─────────────────────────────────────────────────────────────────────────────
 export const INITIAL_CLASSROOMS = [
   {
     id: "class_001",
@@ -134,10 +122,8 @@ export const INITIAL_CLASSROOMS = [
   },
 ];
 
-// ─────────────────────────────────────────────────────────────────────────────
 // DEMO EXAMS
 // Sample exams for classrooms
-// ─────────────────────────────────────────────────────────────────────────────
 export const INITIAL_EXAMS = [
   {
     id: "exam_001",
@@ -179,10 +165,8 @@ export const INITIAL_EXAMS = [
   },
 ];
 
-// ─────────────────────────────────────────────────────────────────────────────
 // DEMO STUDENTS
 // Sample student data
-// ─────────────────────────────────────────────────────────────────────────────
 export const INITIAL_STUDENTS = [
   {
     id: "student_001",
@@ -204,10 +188,8 @@ export const INITIAL_STUDENTS = [
   },
 ];
 
-// ─────────────────────────────────────────────────────────────────────────────
 // UTILITY FUNCTIONS
 // Formatting, grading, calculations
-// ─────────────────────────────────────────────────────────────────────────────
 
 /**
  * Format a score with points and percentage
@@ -244,11 +226,11 @@ export const getGradeColor = (grade) => {
     case "A":
       return COLORS.success;
     case "B":
-      return "#6fa144";
+      return "";
     case "C":
       return COLORS.warning;
     case "D":
-      return "#d97f1d";
+      return "";
     case "F":
       return COLORS.error;
     default:
@@ -304,10 +286,8 @@ export const calculateWeightedScore = (results) => {
   return totalWeight > 0 ? Math.round(weightedSum / totalWeight) : 0;
 };
 
-// ─────────────────────────────────────────────────────────────────────────────
 // CALCULATOR OPERATIONS
 // Core mathematical functions
-// ─────────────────────────────────────────────────────────────────────────────
 
 /**
  * Evaluate a basic mathematical expression
@@ -344,13 +324,11 @@ export const formatNumber = (num) => {
   return parseFloat(num.toFixed(6)).toString();
 };
 
-// ─────────────────────────────────────────────────────────────────────────────
 // APP CONFIGURATION
-// ─────────────────────────────────────────────────────────────────────────────
 
 export const APP_CONFIG = {
   name: "GraphR",
-  tagline: "#CalculatingTheFuture",
+  tagline: "",
   company: "GraphR",
   version: "1.0.0",
   copyrightYear: 2026,
@@ -359,9 +337,7 @@ export const APP_CONFIG = {
   termsUrl: "https://graphr.app/terms",
 };
 
-// ─────────────────────────────────────────────────────────────────────────────
 // EXAM MODE SETTINGS
-// ─────────────────────────────────────────────────────────────────────────────
 
 export const EXAM_MODE_CONFIG = {
   // Detect if student exits exam (switches to different app)
@@ -378,10 +354,8 @@ export const EXAM_MODE_CONFIG = {
   maxViolations: 5,
 };
 
-// ─────────────────────────────────────────────────────────────────────────────
 // IAP PRODUCT CONFIGURATION
 // Must match App Store Connect & Google Play exactly
-// ─────────────────────────────────────────────────────────────────────────────
 export const IAP_PRODUCT_IDS = [
   "com.graphrapp.graphr.pro_monthly",
   "com.graphrapp.graphr.pro_annual",

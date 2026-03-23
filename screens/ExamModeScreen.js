@@ -1,9 +1,8 @@
-/**
+/*
  * screens/ExamModeScreen.js
- * ═══════════════════════════════════════════════════════════════════════════════
+
  *
  * Exam Mode Screen - Secure Testing Environment
- *
  * Patent implementation of exam proctoring:
  * • Timer countdown (restricts to exam duration)
  * • Real-time app-switch detection
@@ -11,7 +10,6 @@
  * • Student cannot exit without teacher approval
  * • Logs all calculator operations
  * • Teacher gets live violation notifications
- *
  * Safety and security. Preventing cheating while protecting students.
  */
 

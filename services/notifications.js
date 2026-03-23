@@ -1,22 +1,20 @@
-/**
+/*
  * services/notifications.js
- * ═══════════════════════════════════════════════════════════════════════════════
+
  *
  * Push Notifications Service
- *
  * Handles push notification operations:
  * • Device registration
  * • Notification sending
  * • Notification routing
  * • Badge management
- *
  * Keep users informed. Real-time exam alerts. Grade notifications.
  */
 
 import * as Notifications from "expo-notifications";
 import * as Device from "expo-device";
 
-/**
+/*
  * Register device for push notifications
  * @param {string} userId
  * @returns {Promise<string>} Device token
@@ -44,7 +42,7 @@ export const registerForPushNotifications = async (userId) => {
   }
 };
 
-/**
+/*
  * Send a local notification
  * @param {object} notificationData
  * @returns {Promise<void>}
@@ -58,7 +56,7 @@ export const sendLocalNotification = async (notificationData) => {
         data: notificationData.data || {},
         badge: 1,
       },
-      trigger: null, // Send immediately
+      trigger: null, 
     });
   } catch (error) {
     console.error("[Notifications] Send notification error:", error.message);
@@ -66,7 +64,7 @@ export const sendLocalNotification = async (notificationData) => {
   }
 };
 
-/**
+/*
  * Listen to notification taps
  * @param {function} callback
  * @returns {function} Unsubscribe function
@@ -80,7 +78,7 @@ export const onNotificationTapped = (callback) => {
   return () => subscription.remove();
 };
 
-/**
+/*
  * Clear badge count
  * @returns {Promise<void>}
  */
@@ -93,7 +91,7 @@ export const clearBadge = async () => {
   }
 };
 
-/**
+/*
  * Set notification handler
  * Call this in app initialization to handle notifications
  */
@@ -107,7 +105,7 @@ export const setNotificationHandler = () => {
   });
 };
 
-/**
+/*
  * Send exam alert notification
  * @param {object} exam
  * @returns {Promise<void>}
@@ -125,7 +123,7 @@ export const sendExamAlert = async (exam) => {
   }
 };
 
-/**
+/*
  * Send grade posted notification
  * @param {object} result
  * @returns {Promise<void>}
@@ -143,7 +141,7 @@ export const sendGradeNotification = async (result) => {
   }
 };
 
-/**
+/*
  * Send violation alert (to teacher)
  * @param {object} violation
  * @returns {Promise<void>}

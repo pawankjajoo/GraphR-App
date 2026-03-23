@@ -1,15 +1,13 @@
-/**
+/*
  * screens/GraphingScreen.js
- * ═══════════════════════════════════════════════════════════════════════════════
+
  *
  * Graphing Screen - Visual Equation Graphing
- *
  * Interactive graphing interface:
  * • Input mathematical equations
  * • Visualize graphs in real-time
  * • Zoom and pan controls
  * • Multiple equations overlay
- *
  * Visualize math. See the patterns. Understand the relationships.
  */
 

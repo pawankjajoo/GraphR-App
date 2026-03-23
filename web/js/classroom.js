@@ -1,4 +1,4 @@
-/**
+/*
  * Classroom Module
  * Handles classroom management for both students and teachers
  */

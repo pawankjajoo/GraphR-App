@@ -1,16 +1,14 @@
-/**
+/*
  * screens/TeacherDashboardScreen.js
- * ═══════════════════════════════════════════════════════════════════════════════
+
  *
  * Teacher Dashboard Screen - Real-Time Classroom Management
- *
  * Teacher control panel:
  * • Real-time exam monitoring (see which students are testing)
  * • App-switch violations (patent feature)
  * • Class performance analytics
  * • Quick exam creation
  * • Student management
- *
  * Empower educators. Monitor assessments. Support students in real time.
  */
 

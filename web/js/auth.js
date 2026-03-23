@@ -1,4 +1,4 @@
-/**
+/*
  * Authentication Module
  * Handles user login, signup, and session management
  */

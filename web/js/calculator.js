@@ -1,4 +1,4 @@
-/**
+/*
  * GraphR Calculator Module
  * Advanced calculator supporting Basic, Scientific, and Graphing modes
  */
@@ -259,7 +259,7 @@ class CalculatorModule {
   }
 
   attachEventListeners() {
-    // Mode switching
+    
     document.querySelectorAll('.mode-btn').forEach(btn => {
       btn.addEventListener('click', (e) => {
         document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
@@ -282,7 +282,6 @@ class CalculatorModule {
   }
 }
 
-// Graphing Calculator
 class GraphingCalculator {
   constructor() {
     this.equation = 'y=x';
@@ -298,7 +297,7 @@ class GraphingCalculator {
       this.equation = e.target.value;
       this.graph();
     });
-    this.graph(); // Initial graph
+    this.graph(); 
   }
 
   graph() {
@@ -309,25 +308,21 @@ class GraphingCalculator {
     const width = canvas.width;
     const height = canvas.height;
 
-    // Clear canvas
-    ctx.fillStyle = '#323232';
+    ctx.fillStyle = '';
     ctx.fillRect(0, 0, width, height);
 
-    // Draw grid
     this.drawGrid(ctx, width, height);
 
-    // Draw axes
     this.drawAxes(ctx, width, height);
 
     // Parse and draw equation
     this.drawEquation(ctx, width, height);
 
-    // Update info
     this.updateInfo();
   }
 
   drawGrid(ctx, width, height) {
-    ctx.strokeStyle = '#373737';
+    ctx.strokeStyle = '';
     ctx.lineWidth = 0.5;
 
     const xStep = width / (this.xMax - this.xMin) * 1;
@@ -351,7 +346,7 @@ class GraphingCalculator {
   }
 
   drawAxes(ctx, width, height) {
-    ctx.strokeStyle = '#b3b3b3';
+    ctx.strokeStyle = '';
     ctx.lineWidth = 2;
 
     // X-axis
@@ -369,13 +364,13 @@ class GraphingCalculator {
     ctx.stroke();
 
     // Labels
-    ctx.fillStyle = '#b3b3b3';
+    ctx.fillStyle = '';
     ctx.font = '12px sans-serif';
     ctx.fillText('0', xPos + 5, yPos - 5);
   }
 
   drawEquation(ctx, width, height) {
-    ctx.strokeStyle = '#1a73e8';
+    ctx.strokeStyle = '';
     ctx.lineWidth = 2;
 
     try {
@@ -446,6 +441,5 @@ class GraphingCalculator {
   }
 }
 
-// Global instances
 const Calculator = new CalculatorModule();
 const Graphing = new GraphingCalculator();

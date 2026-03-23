@@ -1,22 +1,8 @@
 /**
- * App.js
- * ═══════════════════════════════════════════════════════════════════════════════
+ * App.js - Main app entry point
  *
- * THE COMMAND CENTER FOR GRAPHR.
- *
- * App.js is the central orchestrator for the entire GraphR experience. It owns:
- * • Font loading and app readiness
- * • Firebase authentication gate (student vs teacher role selection)
- * • Global state: auth, user profile, exam mode, classroom data, calculator state
- * • Notification & toast lifecycle
- * • IAP (in-app purchases) integration for skins/subscriptions
- * • Tab navigation system (Calculator, Exams, Classroom, Analytics, Profile)
- * • Real-time classroom & exam listeners
- * • Patent-based exam mode detection system
- *
- * Everything flows through here. This is where the educational magic happens.
- * The world's first intuitive, all-in-one calculator app for education.
- * #CalculatingTheFuture
+ * Central orchestrator for the GraphR experience.
+ * Owns: font loading, auth, global state, notifications, tab navigation.
  */
 
 import React, { useState, useEffect, useRef, useCallback } from "react";
@@ -55,11 +41,9 @@ import * as ExamMonitor from "./services/examMonitor";
 
 SplashScreenExpo.preventAutoHideAsync();
 
-// ─────────────────────────────────────────────────────────────────────────────
 // TAB NAVIGATION SYSTEM
 // Students navigate: Calculator, Exams, Classroom, Analytics, Profile
 // Teachers navigate: Dashboard, Exams, Classroom, Analytics, Profile
-// ─────────────────────────────────────────────────────────────────────────────
 const STUDENT_TABS = [
   { key: "calculator", icon: "🧮", label: "Calculator" },
   { key: "exams",      icon: "📝", label: "Exams" },
@@ -88,17 +72,12 @@ export default function App() {
   const [toastMsg, setToastMsg]           = useState(null);
   const [notifMsg, setNotifMsg]           = useState(null);
 
-  // ─────────────────────────────────────────────────────────────────────
-  // Calculator state. The heart of the app.
-  // Engineered by Pawan K Jajoo
-  // ─────────────────────────────────────────────────────────────────────
+  // Calculator state
   const [calculatorMode, setCalculatorMode] = useState("basic"); // basic, scientific, graphing
   const [calculatorDisplay, setCalculatorDisplay] = useState("0");
   const [calculatorHistory, setCalculatorHistory] = useState([]);
 
-  // ─────────────────────────────────────────────────────────────────────
-  // Exam & classroom state. Where learning happens.
-  // ─────────────────────────────────────────────────────────────────────
+  // Exam and classroom state
   const [classrooms, setClassrooms] = useState(INITIAL_CLASSROOMS);
   const [exams, setExams] = useState(INITIAL_EXAMS);
   const [currentExam, setCurrentExam] = useState(null);
@@ -106,9 +85,7 @@ export default function App() {
   const [inExamMode, setInExamMode] = useState(false);
   const [examViolations, setExamViolations] = useState([]);
 
-  // ─────────────────────────────────────────────────────────────────────
   // Student data & subscriptions. Track progress. Unlock features.
-  // ─────────────────────────────────────────────────────────────────────
   const [userProfile, setUserProfile] = useState({
     displayName: "Student",
     email: "",
@@ -119,14 +96,11 @@ export default function App() {
   const [storeProducts, setStoreProducts] = useState([]);
   const [purchasing, setPurchasing] = useState(false);
 
-  // Animation references. Smooth, responsive, premium.
   const toastAnim  = useRef(new Animated.Value(0)).current;
   const notifAnim  = useRef(new Animated.Value(-80)).current;
 
-  // ─────────────────────────────────────────────────────────────────────
   // APP BOOTSTRAP: Font loading & splash screen
   // When fonts arrive, hide splash. App is ready. Go.
-  // ─────────────────────────────────────────────────────────────────────
   useEffect(() => {
     if (fontsLoaded) {
       SplashScreenExpo.hideAsync();
@@ -134,17 +108,12 @@ export default function App() {
     }
   }, [fontsLoaded]);
 
-  // ─────────────────────────────────────────────────────────────────────
   // FIREBASE AUTH GATE
-  // Listen for login. On success: populate profile, register notifications,
-  // initialize exam monitoring. This is where the user enters the arena.
-  // ─────────────────────────────────────────────────────────────────────
   useEffect(() => {
     if (!appReady) return;
 
     const unsubAuth = onAuthStateChange(async (user) => {
       if (user) {
-        // User authenticated. Bring their profile into state.
         setAuthUser(user);
         setIsAuthed(true);
         if (user.displayName) {
@@ -157,16 +126,14 @@ export default function App() {
           setUserProfile((p) => ({ ...p, avatarUri: user.photoURL }));
         }
 
-        // Arm push notifications. Stay connected. Never miss an exam.
         registerForPushNotifications(user.uid).catch(() => {});
 
-        // Initialize exam monitor. Patent-based app-switch detection.
+        // Patent-based app-switch detection.
         ExamMonitor.initialize(user.uid).catch(() => {});
 
-        // Clear any lingering badge counts. Fresh start.
         clearBadge().catch(() => {});
       } else {
-        // Logged out. Clear everything.
+        // Clear everything.
         setAuthUser(null);
         setIsAuthed(false);
         setUserRole(null);
@@ -176,10 +143,8 @@ export default function App() {
     return () => unsubAuth();
   }, [appReady]);
 
-  // ─────────────────────────────────────────────────────────────────────
   // NOTIFICATION ROUTING
   // User taps a notification banner. Route to the right screen. Immediate.
-  // ─────────────────────────────────────────────────────────────────────
   useEffect(() => {
     if (!appReady) return;
     const unsub = onNotificationTapped((data) => {
@@ -190,11 +155,9 @@ export default function App() {
     return unsub;
   }, [appReady]);
 
-  // ─────────────────────────────────────────────────────────────────────
   // EXAM MODE MONITORING
   // Patent implementation: detect app-switch during exams
   // Teacher gets real-time notifications of violations
-  // ─────────────────────────────────────────────────────────────────────
   useEffect(() => {
     if (!appReady || !inExamMode) return;
     const unsub = ExamMonitor.onViolation((violation) => {
@@ -207,10 +170,8 @@ export default function App() {
     return unsub;
   }, [appReady, inExamMode]);
 
-  // ─────────────────────────────────────────────────────────────────────
   // IAP (IN-APP PURCHASE) INITIALIZATION
-  // Monetize: calculator skins, themes, premium analytics. Optional.
-  // ─────────────────────────────────────────────────────────────────────
+  // Optional.
   useEffect(() => {
     if (!appReady) return;
 
@@ -237,11 +198,7 @@ export default function App() {
     return () => IAPService.destroy();
   }, [appReady]);
 
-  // ─────────────────────────────────────────────────────────────────────
-  // TOAST & IN-APP NOTIFICATION ANIMATION HELPERS
-  // Toast: bottom popup, fade in/out. Ephemeral feedback. Simple, elegant.
-  // Notification: top banner, spring arrival, graceful exit. Premium feel.
-  // ─────────────────────────────────────────────────────────────────────
+  // Toast and notification animations
   const showToast = useCallback((msg) => {
     setToastMsg(msg);
     Animated.sequence([
@@ -260,27 +217,16 @@ export default function App() {
     ]).start(() => setNotifMsg(null));
   }, [notifAnim]);
 
-  // ─────────────────────────────────────────────────────────────────────
-  // IAP PURCHASE HANDLER
-  // User wants to upgrade. Initiate purchase.
-  // ─────────────────────────────────────────────────────────────────────
+  // Handle in-app purchase
   const handlePurchasePack = useCallback((productId) => {
     setPurchasing(productId);
     IAPService.purchase(productId);
   }, []);
 
-  // ─────────────────────────────────────────────────────────────────────
-  // PRIMARY RENDER DECISION TREE
-  // Bootstrap -> Auth gate -> Splash -> App. For the driven.
-  // ─────────────────────────────────────────────────────────────────────
-
   // Wait for fonts and app state.
   if (!appReady) return null;
 
-  // ─────────────────────────────────────────────────────────────────────
   // AUTH GATE: No entry without authentication
-  // If logged out, show login screen. Anything is possible after you sign in.
-  // ─────────────────────────────────────────────────────────────────────
   if (!isAuthed) {
     return (
       <>
@@ -300,7 +246,7 @@ export default function App() {
     );
   }
 
-  // Show the splash screen once. Build momentum. Then transition to app.
+  // Show splash screen during initial load
   if (showSplash) {
     return (
       <>
@@ -310,10 +256,8 @@ export default function App() {
     );
   }
 
-  // ─────────────────────────────────────────────────────────────────────
   // DYNAMIC RENDER TREE
   // Select active screen based on navigation state and user role.
-  // ─────────────────────────────────────────────────────────────────────
   const renderScreen = () => {
     // Exam mode active. Show secure exam interface.
     if (inExamMode && currentExam) {
@@ -418,20 +362,13 @@ export default function App() {
 
   const TABS = userRole === "teacher" ? TEACHER_TABS : STUDENT_TABS;
 
-  // ─────────────────────────────────────────────────────────────────────
-  // MAIN APP LAYOUT
-  // Screen content + tab bar + notification layer.
-  // Everything orchestrated from one root view.
-  // ─────────────────────────────────────────────────────────────────────
+  // Render main app layout
   return (
     <View style={styles.root}>
       <StatusBar barStyle="light-content" backgroundColor={COLORS.dark} />
       <View style={{ flex: 1 }}>{renderScreen()}</View>
 
-      {/* ══════════════════════════════════════════════════════════════════
-          TAB BAR NAVIGATION
-          Multiple tabs. Multiple pathways. For students and teachers alike.
-          ══════════════════════════════════════════════════════════════════ */}
+      {/* TAB BAR NAVIGATION */}
       {!inExamMode && (
         <View style={styles.tabBar}>
           {TABS.map((t) => (
@@ -448,10 +385,7 @@ export default function App() {
         </View>
       )}
 
-      {/* ══════════════════════════════════════════════════════════════════
-          IN-APP NOTIFICATION OVERLAY
-          Top banner. Springs down. Real-time exam alerts. Classroom updates.
-          ══════════════════════════════════════════════════════════════════ */}
+      {/* IN-APP NOTIFICATION OVERLAY */}
       {notifMsg && (
         <Animated.View style={[styles.notif, { transform: [{ translateY: notifAnim }] }]}>
           <Text style={{ fontSize: 22 }}>🧮</Text>
@@ -462,11 +396,7 @@ export default function App() {
         </Animated.View>
       )}
 
-      {/* ══════════════════════════════════════════════════════════════════
-          TOAST NOTIFICATION
-          Bottom center. Ephemeral feedback. Confirmations, errors, wins.
-          Fades in. Fades out. Clean & purposeful.
-          ══════════════════════════════════════════════════════════════════ */}
+      {/* TOAST NOTIFICATION */}
       {toastMsg && (
         <Animated.View style={[styles.toast, { opacity: toastAnim }]}>
           <Text style={styles.toastTxt}>{toastMsg}</Text>

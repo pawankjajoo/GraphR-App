@@ -1,16 +1,14 @@
-/**
+/*
  * services/examMonitor.js
- * ═══════════════════════════════════════════════════════════════════════════════
+
  *
  * Exam Monitor Service - Patent-Based Proctoring
- *
  * Implements the core GraphR patent:
  * • Detects when student exits exam app (app-switch detection)
  * • Logs all violations with timestamps
  * • Notifies teacher in real-time
  * • Allows emergency calls while still detecting violations
  * • Never locks the device (student safety first)
- *
  * The future of fair testing. Security and safety in balance.
  */
 
@@ -24,7 +22,7 @@ let currentExamId = null;
 let currentUserId = null;
 let lastAppStateChange = Date.now();
 
-/**
+/*
  * Initialize exam monitor
  * @param {string} userId
  * @returns {Promise<void>}
@@ -34,7 +32,7 @@ export const initialize = async (userId) => {
   console.log("[ExamMonitor] Initialized for user:", userId);
 };
 
-/**
+/*
  * Start monitoring for exam
  * @param {string} examId
  * @returns {void}
@@ -60,7 +58,7 @@ export const startMonitoring = (examId) => {
   };
 };
 
-/**
+/*
  * Stop monitoring
  * @returns {void}
  */
@@ -70,7 +68,7 @@ export const stopMonitoring = () => {
   console.log("[ExamMonitor] Stopped monitoring");
 };
 
-/**
+/*
  * Handle app state changes (core patent logic)
  * @param {string} nextAppState
  * @private
@@ -106,7 +104,7 @@ const handleAppStateChange = (nextAppState) => {
   lastAppStateChange = Date.now();
 };
 
-/**
+/*
  * Register a callback for violations
  * @param {function} callback
  * @returns {function} Unsubscribe function
@@ -120,18 +118,18 @@ export const onViolation = (callback) => {
   };
 };
 
-/**
+/*
  * Get current violation count for exam
  * In production, this would query Firestore
  * @param {string} examId
  * @returns {Promise<number>}
  */
 export const getViolationCount = async (examId) => {
-  // Placeholder implementation
+  
   return 0;
 };
 
-/**
+/*
  * Check if student is allowed to proceed (based on violation count)
  * @param {string} examId
  * @param {number} maxViolations - Threshold before auto-submit
@@ -147,7 +145,7 @@ export const isExamStillActive = async (examId, maxViolations = 5) => {
   }
 };
 
-/**
+/*
  * Clear violations for debugging/testing
  * @private
  */
@@ -156,7 +154,7 @@ export const _clearViolations = () => {
   console.log("[ExamMonitor] Violations cleared (debug only)");
 };
 
-/**
+/*
  * Get monitor status
  * @returns {object}
  */

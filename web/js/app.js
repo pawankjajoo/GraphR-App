@@ -1,12 +1,11 @@
-/**
+/*
  * GraphR Web App - Main Application Logic
  * The orchestrator for the entire GraphR experience
- * #CalculatingTheFuture
  */
 
 class GraphRApp {
   constructor() {
-    // Authentication state
+    
     this.isAuthed = false;
     this.currentUser = null;
     this.userRole = 'student'; // 'student' or 'teacher'
@@ -18,7 +17,6 @@ class GraphRApp {
     this.examResults = this.loadExamResults();
     this.examViolations = this.loadExamViolations();
 
-    // UI state
     this.currentView = 'calculator';
     this.calculatorMode = 'basic';
     this.currentExam = null;
@@ -29,9 +27,7 @@ class GraphRApp {
     this.checkAuthStatus();
   }
 
-  // ──────────────────────────────────────────────────────────────────
   // AUTHENTICATION
-  // ──────────────────────────────────────────────────────────────────
 
   checkAuthStatus() {
     const authUser = localStorage.getItem('graphr_current_user');
@@ -46,19 +42,17 @@ class GraphRApp {
   }
 
   initializeEventListeners() {
-    // Auth form
+    
     const authForm = document.getElementById('authForm');
     if (authForm) {
       authForm.addEventListener('submit', (e) => this.handleAuth(e));
     }
 
-    // Role selector
     const roleButtons = document.querySelectorAll('.role-btn');
     roleButtons.forEach(btn => {
       btn.addEventListener('click', (e) => this.switchRole(e));
     });
 
-    // Sidebar navigation
     const sidebarItems = document.querySelectorAll('.sidebar-item');
     sidebarItems.forEach(item => {
       item.addEventListener('click', (e) => this.switchView(e));
@@ -70,7 +64,6 @@ class GraphRApp {
       logoutBtn.addEventListener('click', () => this.logout());
     }
 
-    // Modal controls
     document.querySelectorAll('.modal-close').forEach(btn => {
       btn.addEventListener('click', (e) => {
         e.target.closest('.modal').classList.add('hidden');
@@ -142,20 +135,14 @@ class GraphRApp {
     const role = e.target.dataset.role;
     this.userRole = role;
 
-    // Update buttons
     document.querySelectorAll('.role-btn').forEach(btn => {
       btn.classList.remove('active');
     });
     e.target.classList.add('active');
 
-    // Update sidebar
     this.updateSidebar();
     this.showView('calculator');
   }
-
-  // ──────────────────────────────────────────────────────────────────
-  // VIEW MANAGEMENT
-  // ──────────────────────────────────────────────────────────────────
 
   showAuthView() {
     document.getElementById('mainView').innerHTML = document.getElementById('authView').innerHTML;
@@ -255,10 +242,6 @@ class GraphRApp {
     }
   }
 
-  // ──────────────────────────────────────────────────────────────────
-  // CLASSROOM MANAGEMENT
-  // ──────────────────────────────────────────────────────────────────
-
   loadClassroomList() {
     const list = document.getElementById('classroomList');
     const userClassrooms = this.classrooms.filter(c => {
@@ -327,10 +310,6 @@ class GraphRApp {
     this.showToast('Edit classroom feature coming soon', 'info');
   }
 
-  // ──────────────────────────────────────────────────────────────────
-  // EXAM MANAGEMENT
-  // ──────────────────────────────────────────────────────────────────
-
   loadExamList() {
     const list = document.getElementById('examList');
     let userExams = [];
@@ -384,7 +363,6 @@ class GraphRApp {
     this.currentExam = this.exams.find(e => e.id === examId);
     if (!this.currentExam) return;
 
-    // Initialize exam
     this.currentExamStartTime = Date.now();
     this.showView('exam-mode');
     this.loadExamMode();
@@ -463,7 +441,6 @@ class GraphRApp {
       }
     });
 
-    // Save result
     const result = {
       id: Date.now().toString(),
       examId: exam.id,
@@ -476,7 +453,6 @@ class GraphRApp {
     this.examResults.push(result);
     this.saveExamResults();
 
-    // Show results
     this.showExamResults(result);
   }
 
@@ -561,9 +537,7 @@ class GraphRApp {
     this.loadExamList();
   }
 
-  // ──────────────────────────────────────────────────────────────────
-  // ANALYTICS & DASHBOARD
-  // ──────────────────────────────────────────────────────────────────
+  // ANALYTICS
 
   loadAnalytics() {
     const results = this.examResults.filter(r => r.studentId === this.currentUser.id);
@@ -589,7 +563,6 @@ class GraphRApp {
       </div>
     `).join('');
 
-    // Show violations
     const violations = this.examViolations.filter(v =>
       v.teacherId === this.currentUser.id
     );
@@ -652,9 +625,7 @@ class GraphRApp {
     document.getElementById('notificationsToggle').checked = true;
   }
 
-  // ──────────────────────────────────────────────────────────────────
   // UTILITIES
-  // ──────────────────────────────────────────────────────────────────
 
   showToast(message, type = 'info') {
     const toast = document.getElementById('toast');
@@ -663,10 +634,6 @@ class GraphRApp {
     toast.classList.remove('hidden');
     setTimeout(() => toast.classList.add('hidden'), 3000);
   }
-
-  // ──────────────────────────────────────────────────────────────────
-  // DATA PERSISTENCE
-  // ──────────────────────────────────────────────────────────────────
 
   loadUsers() {
     const data = localStorage.getItem('graphr_users');

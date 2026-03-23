@@ -1,16 +1,13 @@
 /**
  * services/auth.js
  * ═══════════════════════════════════════════════════════════════════════════════
- *
  * Authentication Service
- *
  * Handles all authentication operations:
  * • Email/password sign up & sign in
  * • Google SSO integration
  * • Auth state management
  * • User session handling
  * • Sign out
- *
  * Secure authentication. Student safety first.
  */
 

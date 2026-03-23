@@ -1,15 +1,13 @@
-/**
+/*
  * services/firebase.js
- * ═══════════════════════════════════════════════════════════════════════════════
+
  *
  * Firebase Configuration & Initialization
- *
  * Central Firebase setup:
  * • Initialize Firebase app
  * • Configure Firestore
  * • Configure Storage
  * • Export initialized instances
- *
  * Single source of truth for all Firebase operations.
  */
 
@@ -18,7 +16,6 @@ import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 import { getAuth } from "firebase/auth";
 
-// Firebase configuration
 const firebaseConfig = {
   apiKey: "YOUR_API_KEY",
   authDomain: "graphr-app.firebaseapp.com",
@@ -28,7 +25,6 @@ const firebaseConfig = {
   appId: "YOUR_APP_ID",
 };
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
 // Initialize Firebase services
@@ -39,7 +35,7 @@ const auth = getAuth(app);
 // Export instances for use in other services
 export { app, db, storage, auth };
 
-/**
+/*
  * Firebase is configured and ready for use
  * All Firestore collections, rules, and security settings
  * are configured in firestore.rules

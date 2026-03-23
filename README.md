@@ -1,8 +1,6 @@
-# GraphR - Calculating the Future
+# GraphR - Educational Calculator App
 
-**#CalculatingTheFuture**
-
-The world's first intuitive, all-in-one calculator app for education. Designed to make phones educational tools rather than distractions in the classroom.
+A mobile application combining a multi-mode calculator with exam proctoring and classroom management tools.
 
 ## What is GraphR?
 
@@ -74,17 +72,29 @@ npm run android
 npm run web
 ```
 
+## Cross-Platform Compilation
+
+This React Native/Expo app compiles to both iOS and Android through EAS (Expo Application Services). There are no separate native implementations. The single codebase builds for both platforms.
+
+```bash
+# Build for iOS
+eas build --platform ios --profile production
+
+# Build for Android
+eas build --platform android --profile production
+```
+
 ## Project Structure
 
 ```
 GraphR App Production/
-├── App.js                    # Main app orchestrator
+├── App.js                    # Main app entry point
 ├── app.json                  # Expo configuration
 ├── eas.json                  # EAS build configuration
 ├── package.json              # Dependencies
 ├── constants/
-│   └── graphr.js            # App constants & utilities
-├── screens/                  # 12+ screen components
+│   └── graphr.js            # App constants and utilities
+├── screens/                  # Screen components
 │   ├── SplashScreen.js
 │   ├── AuthScreen.js
 │   ├── CalculatorScreen.js
@@ -97,17 +107,18 @@ GraphR App Production/
 │   ├── AnalyticsScreen.js
 │   ├── ProfileScreen.js
 │   └── SettingsScreen.js
-├── services/                 # 7 services
+├── services/                 # Service layer
 │   ├── auth.js              # Firebase authentication
 │   ├── firebase.js          # Firebase initialization
 │   ├── firestoreService.js  # Database operations
 │   ├── notifications.js     # Push notifications
-│   ├── examMonitor.js       # Patent proctoring (patent)
+│   ├── examMonitor.js       # Exam proctoring system
 │   ├── iap.js               # In-app purchases
-│   └── analyticsService.js  # Learning analytics
+│   └── analyticsService.js  # Analytics tracking
 ├── legal/
 │   ├── privacy-policy.html
 │   └── terms-of-service.html
+├── web/                      # Web platform version
 ├── firestore.rules          # Firestore security rules
 ├── storage.rules            # Firebase storage rules
 └── SUBMIT_GUIDE.md          # App Store submission guide

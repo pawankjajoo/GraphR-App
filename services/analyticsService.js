@@ -1,19 +1,17 @@
-/**
+/*
  * services/analyticsService.js
- * ═══════════════════════════════════════════════════════════════════════════════
+
  *
  * Learning Analytics Service
- *
  * Processes student learning data:
  * • Performance trends
  * • Skill mastery calculation
  * • Comparative analytics (student vs class)
  * • Personalized recommendations
- *
  * Data-driven education. Insights for growth.
  */
 
-/**
+/*
  * Calculate student's average score
  * @param {array} results - Array of exam results
  * @returns {number} Average score percentage
@@ -30,7 +28,7 @@ export const calculateAverageScore = (results) => {
   return Math.round(total / results.length);
 };
 
-/**
+/*
  * Detect performance trend
  * @param {array} results - Chronologically ordered results
  * @returns {string} "up", "down", or "stable"
@@ -49,7 +47,7 @@ export const detectTrend = (results) => {
   return "stable";
 };
 
-/**
+/*
  * Calculate skill mastery from results
  * Assumes results have a "skillCategory" field
  * @param {array} results
@@ -80,7 +78,7 @@ export const calculateSkillMastery = (results) => {
   return mastery;
 };
 
-/**
+/*
  * Generate personalized recommendations
  * @param {array} results
  * @param {object} skillMastery
@@ -118,7 +116,6 @@ export const generateRecommendations = (results, skillMastery = {}) => {
     });
   }
 
-  // Celebrate strength
   let strongestSkill = null;
   let strongestScore = 0;
   Object.keys(skillMastery).forEach((skill) => {
@@ -139,7 +136,7 @@ export const generateRecommendations = (results, skillMastery = {}) => {
   return recommendations;
 };
 
-/**
+/*
  * Calculate class average
  * @param {array} allResults
  * @returns {number}
@@ -156,7 +153,7 @@ export const calculateClassAverage = (allResults) => {
   return Math.round(total / allResults.length);
 };
 
-/**
+/*
  * Compare student to class
  * @param {array} studentResults
  * @param {array} classResults
@@ -178,7 +175,7 @@ export const compareToClass = (studentResults, classResults) => {
   };
 };
 
-/**
+/*
  * Identify struggling students (for teachers)
  * @param {array} classResults
  * @param {number} threshold - Score below this is "struggling" (default 70)
@@ -218,7 +215,7 @@ export const identifyStrugglingStudents = (classResults, threshold = 70) => {
   return struggling.sort((a, b) => a.averageScore - b.averageScore);
 };
 
-/**
+/*
  * Get time-on-task analytics
  * Assumes results have a "timeSpentSeconds" field
  * @param {array} results

@@ -1,16 +1,14 @@
-/**
+/*
  * screens/SettingsScreen.js
- * ═══════════════════════════════════════════════════════════════════════════════
+
  *
  * Settings Screen - App Configuration
- *
  * Settings management:
  * • Calculator preferences
  * • Notification settings
  * • Privacy & security
  * • Accessibility options
  * • About & legal
- *
  * Customize your GraphR experience. Your preferences, your way.
  */
 

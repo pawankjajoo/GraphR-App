@@ -1,16 +1,14 @@
-/**
+/*
  * screens/AnalyticsScreen.js
- * ═══════════════════════════════════════════════════════════════════════════════
+
  *
  * Analytics Screen - Real-Time Learning Analytics
- *
- * Displays comprehensive learning analytics:
+ * Displays  learning analytics:
  * • Performance trends over time
  * • Skill mastery breakdown
  * • Comparative analytics (student vs class average)
  * • Time-on-task analysis
  * • Calculator usage patterns
- *
  * Data-driven insights. Personalized learning recommendations.
  */
 

@@ -1,15 +1,13 @@
-/**
+/*
  * services/firestoreService.js
- * ═══════════════════════════════════════════════════════════════════════════════
+
  *
  * Firestore Database Service
- *
  * Handles all Firestore CRUD operations:
  * • Classroom management
  * • Exam creation & updates
  * • Grade recording
  * • Student analytics
- *
  * All operations respect Firestore security rules.
  * Real-time data synchronization.
  */
@@ -19,7 +17,7 @@ import {
   collection, addDoc, updateDoc, deleteDoc, doc, getDocs, query, where, onSnapshot,
 } from "firebase/firestore";
 
-/**
+/*
  * Create a new classroom
  * @param {object} classroomData
  * @returns {Promise<string>} Document ID
@@ -37,7 +35,7 @@ export const createClassroom = async (classroomData) => {
   }
 };
 
-/**
+/*
  * Update classroom
  * @param {string} classroomId
  * @param {object} updates
@@ -55,7 +53,7 @@ export const updateClassroom = async (classroomId, updates) => {
   }
 };
 
-/**
+/*
  * Create a new exam
  * @param {object} examData
  * @returns {Promise<string>} Document ID
@@ -73,7 +71,7 @@ export const createExam = async (examData) => {
   }
 };
 
-/**
+/*
  * Get exams for a classroom
  * @param {string} classroomId
  * @returns {Promise<array>}
@@ -89,7 +87,7 @@ export const getClassroomExams = async (classroomId) => {
   }
 };
 
-/**
+/*
  * Record exam result / grade
  * @param {string} studentId
  * @param {string} examId
@@ -111,7 +109,7 @@ export const recordExamResult = async (studentId, examId, resultData) => {
   }
 };
 
-/**
+/*
  * Get student's exam results
  * @param {string} studentId
  * @returns {Promise<array>}
@@ -127,7 +125,7 @@ export const getStudentResults = async (studentId) => {
   }
 };
 
-/**
+/*
  * Get exam analytics for a classroom
  * @param {string} examId
  * @returns {Promise<array>}
@@ -143,7 +141,7 @@ export const getExamAnalytics = async (examId) => {
   }
 };
 
-/**
+/*
  * Log exam violation (app switch)
  * @param {string} studentId
  * @param {string} examId
@@ -165,7 +163,7 @@ export const logExamViolation = async (studentId, examId, violationData) => {
   }
 };
 
-/**
+/*
  * Listen to real-time exam violations
  * @param {string} examId
  * @param {function} callback
@@ -179,7 +177,7 @@ export const onExamViolations = (examId, callback) => {
   });
 };
 
-/**
+/*
  * Update exam status
  * @param {string} examId
  * @param {string} status - "draft", "active", "closed"
@@ -197,7 +195,7 @@ export const updateExamStatus = async (examId, status) => {
   }
 };
 
-/**
+/*
  * Delete exam
  * @param {string} examId
  * @returns {Promise<void>}

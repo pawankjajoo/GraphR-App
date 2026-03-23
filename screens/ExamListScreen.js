@@ -1,16 +1,14 @@
-/**
+/*
  * screens/ExamListScreen.js
- * ═══════════════════════════════════════════════════════════════════════════════
+
  *
  * Exam List Screen - Browse & Start Exams
- *
  * Displays available exams:
  * • List of upcoming and recent exams
  * • Filter by classroom
  * • Start exam (student view)
  * • Create exam (teacher view)
  * • View results (student & teacher)
- *
  * Gateway to assessment. See your challenges. Rise to the occasion.
  */
 

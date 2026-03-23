@@ -1,4 +1,4 @@
-/**
+/*
  * Graphing module - delegated to calculator.js Graphing class
  */
 

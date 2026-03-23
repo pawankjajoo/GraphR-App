@@ -1,4 +1,4 @@
-/**
+/*
  * Exam Module
  * Handles exam creation, taking, and grading
  */

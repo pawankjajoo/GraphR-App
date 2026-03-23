@@ -1,4 +1,4 @@
-/**
+/*
  * GraphR Proctoring Module
  * Patent-based exam monitoring and violation detection
  * Detects app switching without locking the device (emergency calls always work)
@@ -16,7 +16,7 @@ class ProctoringModule {
     this.startTime = null;
   }
 
-  /**
+  /*
    * Start monitoring an exam
    * Tracks app switching and logs violations
    */
@@ -66,7 +66,7 @@ class ProctoringModule {
     console.log('Exam proctoring started for exam:', examId);
   }
 
-  /**
+  /*
    * Stop monitoring
    */
   stopMonitoring() {
@@ -81,7 +81,7 @@ class ProctoringModule {
     console.log('Exam proctoring stopped. Total violations:', this.violationCount);
   }
 
-  /**
+  /*
    * Log a violation
    */
   logViolation(type, message) {
@@ -115,7 +115,7 @@ class ProctoringModule {
     }
   }
 
-  /**
+  /*
    * Show warning to student (non-blocking)
    */
   showViolationWarning(violation) {
@@ -137,7 +137,7 @@ class ProctoringModule {
     }
   }
 
-  /**
+  /*
    * Notify teacher of violation (Firebase in production)
    */
   notifyTeacher(violation) {
@@ -146,24 +146,24 @@ class ProctoringModule {
     console.log('Notifying teacher of violation:', violation);
   }
 
-  /**
+  /*
    * Auto-submit exam if violations exceed threshold
    */
   autoSubmitExam() {
     if (confirm(
       'Too many violations detected. Your exam will be automatically submitted. Continue?'
     )) {
-      // Continue exam
+      
       this.violationCount = 0;
     } else {
-      // Submit exam
+      
       if (app && app.submitExam) {
         app.submitExam();
       }
     }
   }
 
-  /**
+  /*
    * Get violation report
    */
   getReport() {
@@ -188,7 +188,6 @@ class ExamSecurity {
       }
     });
 
-    // Disable printing
     window.print = () => {
       console.warn('Printing disabled during exam');
     };
@@ -218,5 +217,4 @@ class ExamSecurity {
   }
 }
 
-// Global instance
 const Proctoring = new ProctoringModule();
