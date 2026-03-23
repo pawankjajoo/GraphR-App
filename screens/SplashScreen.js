@@ -6,7 +6,6 @@
  *
  * Displays the GraphR brand with animated elements:
  * • Tagline: #CalculatingTheFuture
- * • Company: Insperion Technologies, LLC
  * • Smooth fade-in effect
  * • Auto-dismiss after 3 seconds
  *
@@ -52,12 +51,6 @@ export default function SplashScreen({ onDone }) {
         {/* Main Tagline */}
         <Text style={styles.tagline}>#CalculatingTheFuture</Text>
 
-        {/* Company Name */}
-        <Text style={styles.company}>Insperion Technologies, LLC</Text>
-
-        {/* Company Motto */}
-        <Text style={styles.motto}>innovate. inspire. achieve.</Text>
-
         {/* Subtitle */}
         <Text style={styles.subtitle}>
           The world's first intuitive, all-in-one calculator app for education
@@ -88,18 +81,6 @@ const styles = StyleSheet.create({
     color: COLORS.primary,
     textAlign: "center",
     letterSpacing: 1,
-  },
-  company: {
-    fontFamily: "Inter_700Bold",
-    fontSize: 16,
-    color: COLORS.text,
-    marginTop: 12,
-  },
-  motto: {
-    fontFamily: "Inter_400Regular",
-    fontSize: 12,
-    color: COLORS.textSecondary,
-    fontStyle: "italic",
   },
   subtitle: {
     fontFamily: "Inter_400Regular",

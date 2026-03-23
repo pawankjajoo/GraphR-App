@@ -13,6 +13,8 @@
  * • Calculator button configurations
  *
  * Keep everything synchronized. One source of truth.
+ *
+ * Designed by Pawan K Jajoo
  */
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -349,13 +351,12 @@ export const formatNumber = (num) => {
 export const APP_CONFIG = {
   name: "GraphR",
   tagline: "#CalculatingTheFuture",
-  company: "Insperion Technologies, LLC",
-  companyTagline: "innovate. inspire. achieve.",
+  company: "GraphR",
   version: "1.0.0",
   copyrightYear: 2026,
-  supportEmail: "support@insperion.com",
-  privacyPolicyUrl: "https://insperion.com/privacy",
-  termsUrl: "https://insperion.com/terms",
+  supportEmail: "support@graphr.app",
+  privacyPolicyUrl: "https://graphr.app/privacy",
+  termsUrl: "https://graphr.app/terms",
 };
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -382,13 +383,13 @@ export const EXAM_MODE_CONFIG = {
 // Must match App Store Connect & Google Play exactly
 // ─────────────────────────────────────────────────────────────────────────────
 export const IAP_PRODUCT_IDS = [
-  "com.insperion.graphr.pro_monthly",
-  "com.insperion.graphr.pro_annual",
+  "com.graphrapp.graphr.pro_monthly",
+  "com.graphrapp.graphr.pro_annual",
 ];
 
 export const IAP_PRODUCTS = [
   {
-    productId: "com.insperion.graphr.pro_monthly",
+    productId: "com.graphrapp.graphr.pro_monthly",
     name: "GraphR Pro",
     tier: "pro",
     duration: "monthly",
@@ -397,7 +398,7 @@ export const IAP_PRODUCTS = [
     features: ["All calculator modes", "Graphing", "Unlimited exams", "Advanced analytics"],
   },
   {
-    productId: "com.insperion.graphr.pro_annual",
+    productId: "com.graphrapp.graphr.pro_annual",
     name: "GraphR Pro (Annual)",
     tier: "pro",
     duration: "annual",

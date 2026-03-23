@@ -7,7 +7,7 @@
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "dark",
     "backgroundColor": "#1a1a1a",
-    "scheme": "com.insperion.graphr",
+    "scheme": "com.graphrapp.graphr",
     "splash": {
       "image": "./assets/splash-icon.png",
       "resizeMode": "contain",
@@ -15,7 +15,7 @@
     },
     "ios": {
       "supportsTablet": false,
-      "bundleIdentifier": "com.insperion.graphr",
+      "bundleIdentifier": "com.graphrapp.graphr",
       "buildNumber": "1",
       "googleServicesFile": "./GoogleService-Info.plist",
       "infoPlist": {
@@ -32,7 +32,7 @@
       },
       "entitlements": {
         "com.apple.developer.in-app-payments": [
-          "merchant.com.insperion.graphr"
+          "merchant.com.graphrapp.graphr"
         ],
         "aps-environment": "production"
       },
@@ -45,7 +45,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#1a1a1a"
       },
-      "package": "com.insperion.graphr",
+      "package": "com.graphrapp.graphr",
       "versionCode": 1,
       "googleServicesFile": "./google-services.json",
       "permissions": [

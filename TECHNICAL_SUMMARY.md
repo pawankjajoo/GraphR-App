@@ -113,8 +113,8 @@ GraphR is a React Native mobile application built with Expo, Firebase backend, a
 ### Configuration
 
 **app.json** (Expo config)
-- iOS: com.insperion.graphr
-- Android: com.insperion.graphr
+- iOS: com.graphrapp.graphr
+- Android: com.graphrapp.graphr
 - Plugins: expo-font, expo-notifications, react-native-iap
 - Permissions: location, camera, notifications
 - Splash screen configuration
@@ -248,4 +248,4 @@ The core innovation is in `services/examMonitor.js`:
 
 ---
 
-Built by Insperion Technologies, LLC | innovate. inspire. achieve.
+Built by GraphR App

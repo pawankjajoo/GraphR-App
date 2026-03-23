@@ -118,7 +118,7 @@ export default function ProfileScreen({
           {userProfile.subscriptionTier === "free" && (
             <TouchableOpacity
               style={styles.upgradeButton}
-              onPress={() => handlePurchaseSubscription("com.insperion.graphr.pro_monthly")}
+              onPress={() => handlePurchaseSubscription("com.graphrapp.graphr.pro_monthly")}
             >
               <Text style={styles.upgradeButtonText}>Upgrade</Text>
             </TouchableOpacity>
@@ -137,7 +137,7 @@ export default function ProfileScreen({
               <Text style={styles.upgradeCardFeature}>All features</Text>
               <TouchableOpacity
                 style={styles.upgradeCardButton}
-                onPress={() => handlePurchaseSubscription("com.insperion.graphr.pro_monthly")}
+                onPress={() => handlePurchaseSubscription("com.graphrapp.graphr.pro_monthly")}
                 disabled={purchasing}
               >
                 <Text style={styles.upgradeCardButtonText}>
@@ -151,7 +151,7 @@ export default function ProfileScreen({
               <Text style={styles.upgradeCardFeature}>Save 15%</Text>
               <TouchableOpacity
                 style={styles.upgradeCardButton}
-                onPress={() => handlePurchaseSubscription("com.insperion.graphr.pro_annual")}
+                onPress={() => handlePurchaseSubscription("com.graphrapp.graphr.pro_annual")}
                 disabled={purchasing}
               >
                 <Text style={styles.upgradeCardButtonText}>

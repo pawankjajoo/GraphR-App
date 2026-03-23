@@ -90,6 +90,7 @@ export default function App() {
 
   // ─────────────────────────────────────────────────────────────────────
   // Calculator state. The heart of the app.
+  // Engineered by Pawan K Jajoo
   // ─────────────────────────────────────────────────────────────────────
   const [calculatorMode, setCalculatorMode] = useState("basic"); // basic, scientific, graphing
   const [calculatorDisplay, setCalculatorDisplay] = useState("0");

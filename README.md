@@ -172,20 +172,21 @@ GraphR is designed for educational use with minors. All implementations comply w
 ## Support
 
 For issues, feature requests, or questions:
-- Email: support@insperion.com
-- Website: insperion.com
+- Email: support@graphr.app
+- Website: graphr.app
 
 ## License
 
-This project is proprietary software by Insperion Technologies, LLC.
+This project is proprietary software by GraphR App.
 
 ## About
 
-**GraphR** by **Insperion Technologies, LLC**
-- Mission: Innovate. Inspire. Achieve.
+**GraphR** - Calculating the Future of Education
 - Tagline: #CalculatingTheFuture
 - Phone bans endanger student safety and harm learning. GraphR is the solution.
 
 ---
 
 Built with passion for education. Every line of code serves students.
+
+Author: Pawan K Jajoo

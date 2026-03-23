@@ -161,7 +161,7 @@ export default function SettingsScreen({ showToast }) {
       {/* Footer */}
       <View style={styles.footer}>
         <Text style={styles.footerText}>
-          GraphR v1.0.0 by Insperion Technologies, LLC
+          GraphR v1.0.0
         </Text>
         <Text style={styles.footerSubtext}>
           Calculating the future of education

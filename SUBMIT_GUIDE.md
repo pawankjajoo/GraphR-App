@@ -29,7 +29,7 @@ This guide walks through submitting GraphR to the Apple App Store and Google Pla
 1. Go to Certificates, Identifiers & Profiles
 2. Create new App ID
    - Name: GraphR
-   - Bundle ID: com.insperion.graphr
+   - Bundle ID: com.graphrapp.graphr
    - Capabilities: Push Notifications, In-App Purchase
 3. Register devices for testing (TestFlight)
 
@@ -46,7 +46,7 @@ This guide walks through submitting GraphR to the Apple App Store and Google Pla
 3. Click "+" and select "New App"
 4. Fill in:
    - Name: GraphR
-   - Bundle ID: com.insperion.graphr
+   - Bundle ID: com.graphrapp.graphr
    - SKU: graphr-2026-001
    - Platform: iOS
 
@@ -60,13 +60,13 @@ This guide walks through submitting GraphR to the Apple App Store and Google Pla
    - Keywords: calculator, education, math, graphing, testing
 
 2. **Privacy Policy**
-   - Link: https://insperion.com/privacy
+   - Link: https://graphr.app/privacy
 
 3. **Support URL**
-   - https://insperion.com/support
+   - https://graphr.app/support
 
 4. **Contact Email**
-   - support@insperion.com
+   - support@graphr.app
 
 ### Step 6: Add Screenshots & Artwork
 
@@ -90,8 +90,8 @@ In App Store Connect:
 1. Go to "In-App Purchases"
 2. Click "+" to add new purchases
 3. Create products matching IAP_PRODUCT_IDS:
-   - com.insperion.graphr.pro_monthly ($4.99)
-   - com.insperion.graphr.pro_annual ($49.99)
+   - com.graphrapp.graphr.pro_monthly ($4.99)
+   - com.graphrapp.graphr.pro_annual ($49.99)
 4. Set pricing tier
 5. Review and submit
 
@@ -192,8 +192,8 @@ Once approved:
 ### Step 6: Set Up In-App Billing
 
 1. Create products in Google Play Console:
-   - com.insperion.graphr.pro_monthly
-   - com.insperion.graphr.pro_annual
+   - com.graphrapp.graphr.pro_monthly
+   - com.graphrapp.graphr.pro_annual
 
 2. Set pricing:
    - Monthly: $4.99
@@ -271,7 +271,7 @@ Download the signed APK/AAB from Expo dashboard.
 
 ### Support
 
-- Create support email: support@insperion.com
+- Create support email: support@graphr.app
 - Monitor help desk for issues
 - Respond to app store reviews
 - Plan hotfix releases if needed
@@ -315,8 +315,8 @@ Download the signed APK/AAB from Expo dashboard.
 - Apple App Store Connect: https://appstoreconnect.apple.com
 - Google Play Console: https://play.google.com/apps/publish
 - Expo Docs: https://docs.expo.dev/distribution/building-on-ci/
-- GraphR Privacy Policy: https://insperion.com/privacy
-- GraphR Support: support@insperion.com
+- GraphR Privacy Policy: https://graphr.app/privacy
+- GraphR Support: support@graphr.app
 
 ## Timeline
 
