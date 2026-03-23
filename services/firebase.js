@@ -1,6 +1,5 @@
 /*
  * services/firebase.js
-
  *
  * Firebase Configuration & Initialization
  * Central Firebase setup:

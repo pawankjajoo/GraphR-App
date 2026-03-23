@@ -1,6 +1,5 @@
 /*
  * services/examMonitor.js
-
  *
  * Exam Monitor Service - Patent-Based Proctoring
  * Implements the core GraphR patent:

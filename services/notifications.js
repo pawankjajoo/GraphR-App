@@ -1,6 +1,5 @@
 /*
  * services/notifications.js
-
  *
  * Push Notifications Service
  * Handles push notification operations:

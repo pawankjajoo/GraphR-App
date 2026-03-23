@@ -1,6 +1,5 @@
 /*
  * screens/ClassroomScreen.js
-
  *
  * Classroom Screen - Join & Manage Classrooms
  * Classroom features:

@@ -1,6 +1,5 @@
 /*
  * screens/AuthScreen.js
-
  *
  * Authentication Screen - Login & Role Selection
  * Handles user login with role selection:

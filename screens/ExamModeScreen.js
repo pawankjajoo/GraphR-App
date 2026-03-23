@@ -1,6 +1,5 @@
 /*
  * screens/ExamModeScreen.js
-
  *
  * Exam Mode Screen - Secure Testing Environment
  * Patent implementation of exam proctoring:

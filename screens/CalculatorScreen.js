@@ -1,6 +1,5 @@
 /*
  * screens/CalculatorScreen.js
-
  *
  * Calculator Screen - Multi-Mode Calculator
  * Displays a fully functional calculator with three modes:

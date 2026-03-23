@@ -1,6 +1,6 @@
 /**
  * constants/graphr.js
- * ═══════════════════════════════════════════════════════════════════════════════
+ *
  * GraphR App Constants & Configuration
  * Central location for all app-wide constants:
  * • Color palette (education blue, success green, dark mode)

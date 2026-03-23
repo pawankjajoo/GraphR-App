@@ -1,6 +1,5 @@
 /*
  * screens/ExamListScreen.js
-
  *
  * Exam List Screen - Browse & Start Exams
  * Displays available exams:

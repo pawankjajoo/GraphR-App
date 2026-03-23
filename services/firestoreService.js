@@ -1,6 +1,5 @@
 /*
  * services/firestoreService.js
-
  *
  * Firestore Database Service
  * Handles all Firestore CRUD operations:

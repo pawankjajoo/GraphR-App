@@ -1,6 +1,5 @@
 /*
  * screens/AnalyticsScreen.js
-
  *
  * Analytics Screen - Real-Time Learning Analytics
  * Displays  learning analytics:

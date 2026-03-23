@@ -1,6 +1,5 @@
 /*
  * services/analyticsService.js
-
  *
  * Learning Analytics Service
  * Processes student learning data:

@@ -1,6 +1,5 @@
 /*
  * screens/SettingsScreen.js
-
  *
  * Settings Screen - App Configuration
  * Settings management:

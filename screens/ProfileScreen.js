@@ -1,6 +1,5 @@
 /*
  * screens/ProfileScreen.js
-
  *
  * Profile Screen - User Profile & Settings
  * User profile management:

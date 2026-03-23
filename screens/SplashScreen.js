@@ -1,6 +1,5 @@
 /*
  * screens/SplashScreen.js
-
  *
  * Splash Screen - First impression
  * Displays the GraphR brand with animated elements:

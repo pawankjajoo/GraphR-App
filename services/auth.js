@@ -1,6 +1,6 @@
 /**
  * services/auth.js
- * ═══════════════════════════════════════════════════════════════════════════════
+ *
  * Authentication Service
  * Handles all authentication operations:
  * • Email/password sign up & sign in

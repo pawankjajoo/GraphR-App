@@ -1,6 +1,5 @@
 /*
  * services/iap.js
-
  *
  * In-App Purchase Service
  * Handles all IAP operations:

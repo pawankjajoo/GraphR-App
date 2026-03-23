@@ -1,6 +1,5 @@
 /*
  * screens/GraphingScreen.js
-
  *
  * Graphing Screen - Visual Equation Graphing
  * Interactive graphing interface:

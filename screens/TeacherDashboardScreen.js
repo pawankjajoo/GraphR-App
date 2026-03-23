@@ -1,6 +1,5 @@
 /*
  * screens/TeacherDashboardScreen.js
-
  *
  * Teacher Dashboard Screen - Real-Time Classroom Management
  * Teacher control panel:

@@ -1,6 +1,5 @@
 /*
  * screens/GradeBookScreen.js
-
  *
  * Grade Book Screen - Instant Grading & Results
  * Displays exam results:
