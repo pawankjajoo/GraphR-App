@@ -1,405 +1,306 @@
 /**
- * Authentication Screen Component
+ * screens/AuthScreen.js
+ * ═══════════════════════════════════════════════════════════════════════════════
  *
- * Handles user sign-in and sign-up flows.
- * Supports both student and teacher authentication.
+ * Authentication Screen - Login & Role Selection
  *
- * Features:
- * - Email/password login
- * - User registration
- * - Role selection (student/teacher)
- * - Remember me functionality
+ * Handles user login with role selection:
+ * • Login with email/password or Google SSO
+ * • Choose role: Student, Teacher, or Admin
+ * • Firebase authentication integration
+ * • Sign up flow for new users
+ *
+ * The gateway to GraphR. Security and accessibility in one screen.
  */
 
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
-  View,
-  Text,
-  StyleSheet,
-  TextInput,
-  TouchableOpacity,
-  ScrollView,
-  ActivityIndicator,
-  Alert,
-  KeyboardAvoidingView,
-  Platform,
-} from 'react-native';
-import { useAuth } from '../context/AuthContext';
+  View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, Alert,
+} from "react-native";
+import { COLORS } from "../constants/graphr";
+import * as Auth from "../services/auth";
 
-const AuthScreen = ({ isLoading: screenLoading = false }) => {
-  const { signIn, signUp } = useAuth();
+export default function AuthScreen({ onAuthSuccess, showToast }) {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [selectedRole, setSelectedRole] = useState(null);
+  const [isSignUp, setIsSignUp] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const [isLogin, setIsLogin] = useState(true);
-  const [isLoading, setIsLoading] = useState(screenLoading);
-  const [userRole, setUserRole] = useState('student');
-
-  // Form fields
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [name, setName] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-
-  /**
-   * Handle sign in button press
-   * Validates input and calls auth service
-   */
-  const handleSignIn = async () => {
-    if (!email || !password) {
-      Alert.alert('Error', 'Please fill in all fields');
+  const handleEmailAuth = async () => {
+    if (!email || !password || !selectedRole) {
+      showToast("Please fill in all fields");
       return;
     }
 
-    setIsLoading(true);
+    setLoading(true);
     try {
-      const result = await signIn(email, password, userRole);
-      if (!result.success) {
-        Alert.alert('Sign In Failed', result.error);
+      const user = isSignUp
+        ? await Auth.signUpWithEmail(email, password)
+        : await Auth.signInWithEmail(email, password);
+
+      if (user) {
+        onAuthSuccess(user, selectedRole);
       }
     } catch (error) {
-      Alert.alert('Error', 'An unexpected error occurred');
+      showToast(error.message || "Authentication failed");
     } finally {
-      setIsLoading(false);
+      setLoading(false);
     }
   };
 
-  /**
-   * Handle sign up button press
-   * Validates input and creates new account
-   */
-  const handleSignUp = async () => {
-    if (!email || !password || !name || !confirmPassword) {
-      Alert.alert('Error', 'Please fill in all fields');
+  const handleGoogleAuth = async () => {
+    if (!selectedRole) {
+      showToast("Please select a role");
       return;
     }
 
-    if (password !== confirmPassword) {
-      Alert.alert('Error', 'Passwords do not match');
-      return;
-    }
-
-    if (password.length < 6) {
-      Alert.alert('Error', 'Password must be at least 6 characters');
-      return;
-    }
-
-    setIsLoading(true);
+    setLoading(true);
     try {
-      const result = await signUp(email, password, name, userRole);
-      if (!result.success) {
-        Alert.alert('Sign Up Failed', result.error);
+      const user = await Auth.signInWithGoogle();
+      if (user) {
+        onAuthSuccess(user, selectedRole);
       }
     } catch (error) {
-      Alert.alert('Error', 'An unexpected error occurred');
+      showToast(error.message || "Google sign-in failed");
     } finally {
-      setIsLoading(false);
+      setLoading(false);
     }
   };
-
-  if (screenLoading) {
-    return (
-      <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#3498DB" />
-        <Text style={styles.loadingText}>Loading GraphR...</Text>
-      </View>
-    );
-  }
 
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={styles.container}
-    >
-      <ScrollView contentContainerStyle={styles.scrollContent}>
-        {/* Logo/Header */}
-        <View style={styles.headerSection}>
-          <Text style={styles.appTitle}>GraphR</Text>
-          <Text style={styles.appSubtitle}>
-            Interactive Mathematics Learning Platform
-          </Text>
-        </View>
+    <ScrollView style={styles.container} contentContainerStyle={styles.content}>
+      {/* Header */}
+      <View style={styles.header}>
+        <Text style={styles.icon}>🧮</Text>
+        <Text style={styles.title}>GraphR</Text>
+        <Text style={styles.subtitle}>#CalculatingTheFuture</Text>
+      </View>
 
-        {/* Role Selector */}
-        <View style={styles.roleSelectorContainer}>
-          <Text style={styles.roleSelectorLabel}>Who are you?</Text>
-          <View style={styles.roleSelector}>
+      {/* Role Selection */}
+      <View style={styles.section}>
+        <Text style={styles.sectionTitle}>I am a</Text>
+        <View style={styles.roleButtons}>
+          {[
+            { role: "student", icon: "👨", label: "Student" },
+            { role: "teacher", icon: "🎓", label: "Teacher" },
+            { role: "admin", icon: "👑", label: "Admin" },
+          ].map(({ role, icon, label }) => (
             <TouchableOpacity
+              key={role}
               style={[
                 styles.roleButton,
-                userRole === 'student' && styles.activeRoleButton,
+                selectedRole === role && styles.roleButtonActive,
               ]}
-              onPress={() => setUserRole('student')}
+              onPress={() => setSelectedRole(role)}
             >
+              <Text style={styles.roleIcon}>{icon}</Text>
               <Text
                 style={[
-                  styles.roleButtonText,
-                  userRole === 'student' && styles.activeRoleButtonText,
+                  styles.roleLabel,
+                  selectedRole === role && styles.roleLabelActive,
                 ]}
               >
-                Student
+                {label}
               </Text>
             </TouchableOpacity>
-            <TouchableOpacity
-              style={[
-                styles.roleButton,
-                userRole === 'teacher' && styles.activeRoleButton,
-              ]}
-              onPress={() => setUserRole('teacher')}
-            >
-              <Text
-                style={[
-                  styles.roleButtonText,
-                  userRole === 'teacher' && styles.activeRoleButtonText,
-                ]}
-              >
-                Teacher
-              </Text>
-            </TouchableOpacity>
-          </View>
+          ))}
         </View>
+      </View>
 
-        {/* Form Container */}
-        <View style={styles.formContainer}>
-          {/* Sign Up Form */}
-          {!isLogin && (
-            <TextInput
-              style={styles.input}
-              placeholder="Full Name"
-              placeholderTextColor="#95A5A6"
-              value={name}
-              onChangeText={setName}
-              editable={!isLoading}
-            />
-          )}
+      {/* Email Login */}
+      <View style={styles.section}>
+        <Text style={styles.sectionTitle}>
+          {isSignUp ? "Create Account" : "Sign In"}
+        </Text>
 
-          {/* Email Input */}
-          <TextInput
-            style={styles.input}
-            placeholder="Email Address"
-            placeholderTextColor="#95A5A6"
-            value={email}
-            onChangeText={setEmail}
-            autoCapitalize="none"
-            keyboardType="email-address"
-            editable={!isLoading}
-          />
+        <TextInput
+          style={styles.input}
+          placeholder="Email"
+          placeholderTextColor={COLORS.textMuted}
+          value={email}
+          onChangeText={setEmail}
+          keyboardType="email-address"
+          autoCapitalize="none"
+          editable={!loading}
+        />
 
-          {/* Password Input */}
-          <TextInput
-            style={styles.input}
-            placeholder="Password"
-            placeholderTextColor="#95A5A6"
-            value={password}
-            onChangeText={setPassword}
-            secureTextEntry
-            editable={!isLoading}
-          />
+        <TextInput
+          style={styles.input}
+          placeholder="Password"
+          placeholderTextColor={COLORS.textMuted}
+          value={password}
+          onChangeText={setPassword}
+          secureTextEntry
+          editable={!loading}
+        />
 
-          {/* Confirm Password (Sign Up Only) */}
-          {!isLogin && (
-            <TextInput
-              style={styles.input}
-              placeholder="Confirm Password"
-              placeholderTextColor="#95A5A6"
-              value={confirmPassword}
-              onChangeText={setConfirmPassword}
-              secureTextEntry
-              editable={!isLoading}
-            />
-          )}
-
-          {/* Sign In / Sign Up Button */}
-          <TouchableOpacity
-            style={[styles.primaryButton, isLoading && styles.buttonDisabled]}
-            onPress={isLogin ? handleSignIn : handleSignUp}
-            disabled={isLoading}
-          >
-            {isLoading ? (
-              <ActivityIndicator color="#FFFFFF" />
-            ) : (
-              <Text style={styles.primaryButtonText}>
-                {isLogin ? 'Sign In' : 'Create Account'}
-              </Text>
-            )}
-          </TouchableOpacity>
-
-          {/* Toggle Sign In / Sign Up */}
-          <View style={styles.toggleContainer}>
-            <Text style={styles.toggleText}>
-              {isLogin ? "Don't have an account? " : 'Already have an account? '}
-            </Text>
-            <TouchableOpacity
-              onPress={() => {
-                setIsLogin(!isLogin);
-                setEmail('');
-                setPassword('');
-                setName('');
-                setConfirmPassword('');
-              }}
-              disabled={isLoading}
-            >
-              <Text style={styles.toggleButton}>
-                {isLogin ? 'Sign Up' : 'Sign In'}
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-
-        {/* Demo Credentials Info */}
-        <View style={styles.demoSection}>
-          <Text style={styles.demoTitle}>Demo Credentials</Text>
-          <Text style={styles.demoText}>
-            Email: demo@graphr.edu
+        <TouchableOpacity
+          style={[styles.button, styles.primaryButton, loading && styles.buttonDisabled]}
+          onPress={handleEmailAuth}
+          disabled={loading}
+        >
+          <Text style={styles.buttonText}>
+            {loading ? "Loading..." : isSignUp ? "Create Account" : "Sign In"}
           </Text>
-          <Text style={styles.demoText}>
-            Password: demo123
+        </TouchableOpacity>
+
+        <TouchableOpacity onPress={() => setIsSignUp(!isSignUp)}>
+          <Text style={styles.toggleText}>
+            {isSignUp ? "Already have an account? Sign in" : "New here? Create account"}
           </Text>
-        </View>
-      </ScrollView>
-    </KeyboardAvoidingView>
+        </TouchableOpacity>
+      </View>
+
+      {/* Google Auth */}
+      <View style={styles.section}>
+        <TouchableOpacity
+          style={[styles.button, styles.googleButton, loading && styles.buttonDisabled]}
+          onPress={handleGoogleAuth}
+          disabled={loading}
+        >
+          <Text style={styles.googleButtonText}>Sign in with Google</Text>
+        </TouchableOpacity>
+      </View>
+
+      {/* Legal */}
+      <View style={styles.footer}>
+        <Text style={styles.footerText}>
+          By signing in, you agree to our Terms of Service and Privacy Policy
+        </Text>
+      </View>
+    </ScrollView>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F5F5F5',
+    backgroundColor: COLORS.dark,
   },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5F5F5',
+  content: {
+    padding: 20,
+    paddingTop: 40,
   },
-  loadingText: {
-    marginTop: 12,
-    color: '#7F8C8D',
-    fontSize: 14,
-  },
-  scrollContent: {
-    flexGrow: 1,
-    paddingHorizontal: 20,
-    paddingVertical: 40,
-    justifyContent: 'center',
-  },
-  headerSection: {
-    alignItems: 'center',
+  header: {
+    alignItems: "center",
     marginBottom: 40,
   },
-  appTitle: {
-    fontSize: 44,
-    fontWeight: '700',
-    color: '#3498DB',
-    marginBottom: 8,
+  icon: {
+    fontSize: 64,
+    marginBottom: 12,
   },
-  appSubtitle: {
+  title: {
+    fontFamily: "Inter_700Bold",
+    fontSize: 32,
+    color: COLORS.text,
+    marginBottom: 4,
+  },
+  subtitle: {
+    fontFamily: "Inter_400Regular",
+    fontSize: 13,
+    color: COLORS.primary,
+    letterSpacing: 1,
+  },
+  section: {
+    marginBottom: 32,
+  },
+  sectionTitle: {
+    fontFamily: "Inter_700Bold",
     fontSize: 14,
-    color: '#7F8C8D',
-    textAlign: 'center',
+    color: COLORS.text,
+    marginBottom: 12,
+    textTransform: "uppercase",
+    letterSpacing: 1,
   },
-  roleSelectorContainer: {
-    marginBottom: 30,
-  },
-  roleSelectorLabel: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: '#2C3E50',
-    marginBottom: 10,
-    textAlign: 'center',
-  },
-  roleSelector: {
-    flexDirection: 'row',
+  roleButtons: {
+    flexDirection: "row",
     gap: 12,
+    justifyContent: "space-between",
   },
   roleButton: {
     flex: 1,
-    paddingVertical: 12,
-    paddingHorizontal: 16,
-    borderRadius: 8,
-    backgroundColor: '#ECF0F1',
-    borderWidth: 1,
-    borderColor: '#BDC3C7',
-  },
-  activeRoleButton: {
-    backgroundColor: '#3498DB',
-    borderColor: '#2980B9',
-  },
-  roleButtonText: {
-    textAlign: 'center',
-    fontWeight: '600',
-    color: '#7F8C8D',
-  },
-  activeRoleButtonText: {
-    color: '#FFFFFF',
-  },
-  formContainer: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: COLORS.darkSecondary,
     borderRadius: 12,
-    padding: 20,
-    marginBottom: 20,
-    shadowColor: '#000',
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 3,
+    borderWidth: 2,
+    borderColor: COLORS.border,
+    paddingVertical: 16,
+    alignItems: "center",
+    gap: 8,
+  },
+  roleButtonActive: {
+    borderColor: COLORS.primary,
+    backgroundColor: "rgba(26, 115, 232, 0.1)",
+  },
+  roleIcon: {
+    fontSize: 28,
+  },
+  roleLabel: {
+    fontFamily: "Inter_600SemiBold",
+    fontSize: 12,
+    color: COLORS.textSecondary,
+  },
+  roleLabelActive: {
+    color: COLORS.primary,
   },
   input: {
-    borderWidth: 1,
-    borderColor: '#ECF0F1',
+    backgroundColor: COLORS.input,
     borderRadius: 8,
-    paddingHorizontal: 15,
+    paddingHorizontal: 14,
     paddingVertical: 12,
-    marginBottom: 12,
+    fontFamily: "Inter_400Regular",
     fontSize: 14,
-    color: '#2C3E50',
-    backgroundColor: '#F8F9FA',
+    color: COLORS.text,
+    marginBottom: 12,
+    borderWidth: 1,
+    borderColor: COLORS.border,
+  },
+  button: {
+    borderRadius: 8,
+    paddingVertical: 12,
+    alignItems: "center",
+    marginBottom: 12,
   },
   primaryButton: {
-    backgroundColor: '#3498DB',
-    paddingVertical: 14,
-    borderRadius: 8,
-    alignItems: 'center',
-    marginTop: 8,
+    backgroundColor: COLORS.primary,
+  },
+  googleButton: {
+    borderWidth: 1,
+    borderColor: COLORS.border,
+    backgroundColor: COLORS.darkSecondary,
+  },
+  buttonText: {
+    fontFamily: "Inter_700Bold",
+    fontSize: 14,
+    color: COLORS.text,
+    letterSpacing: 0.5,
+  },
+  googleButtonText: {
+    fontFamily: "Inter_700Bold",
+    fontSize: 14,
+    color: COLORS.text,
+    letterSpacing: 0.5,
   },
   buttonDisabled: {
     opacity: 0.6,
   },
-  primaryButtonText: {
-    color: '#FFFFFF',
-    fontSize: 16,
-    fontWeight: '700',
-  },
-  toggleContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 16,
-  },
   toggleText: {
-    color: '#7F8C8D',
-    fontSize: 13,
-  },
-  toggleButton: {
-    color: '#3498DB',
-    fontWeight: '600',
-    fontSize: 13,
-  },
-  demoSection: {
-    backgroundColor: '#FEF9E7',
-    borderRadius: 8,
-    padding: 15,
-    borderLeftWidth: 4,
-    borderLeftColor: '#F39C12',
-  },
-  demoTitle: {
-    fontWeight: '700',
-    color: '#D68910',
-    marginBottom: 8,
-  },
-  demoText: {
-    color: '#A6753D',
+    fontFamily: "Inter_400Regular",
     fontSize: 12,
-    marginVertical: 2,
-    fontFamily: 'monospace',
+    color: COLORS.primary,
+    textAlign: "center",
+  },
+  footer: {
+    marginTop: 40,
+    paddingTop: 20,
+    borderTopWidth: 1,
+    borderTopColor: COLORS.border,
+  },
+  footerText: {
+    fontFamily: "Inter_400Regular",
+    fontSize: 11,
+    color: COLORS.textMuted,
+    textAlign: "center",
+    lineHeight: 16,
   },
 });
-
-export default AuthScreen;

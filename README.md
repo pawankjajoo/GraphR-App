@@ -1,93 +1,65 @@
-# GraphR: Interactive Mathematics Education Platform
+# GraphR - Calculating the Future
 
-A production-ready cross-platform mobile application that transforms smartphones into secure learning tools for mathematics education while preventing cheating through patent-pending exam monitoring technology.
+**#CalculatingTheFuture**
 
-## Overview
+The world's first intuitive, all-in-one calculator app for education. Designed to make phones educational tools rather than distractions in the classroom.
 
-GraphR represents first principles thinking in education. Rather than banning phones in classrooms (which endangers student safety and limits educational access), GraphR leverages mobile devices as controlled, secure learning instruments. The platform is built on US Patents 10,339,827 B2 and 10,839,708 B2, which provide novel exam monitoring that detects unauthorized activities without locking down student devices.
+## What is GraphR?
+
+GraphR is a mobile application built for students and teachers that combines:
+
+- **All-in-one calculator**: Basic, scientific, and graphing modes in one app
+- **Secure exam mode**: Patent-based app-switch detection ensures fair testing
+- **Real-time analytics**: Track student progress with learning insights
+- **Classroom management**: Teachers can create exams, monitor assessments, and grade in real-time
 
 ## Key Features
 
-### Interactive Calculator
-- Basic, scientific, and graphing modes
-- Step-by-step calculation history
-- Real-time graphing with adjustable parameters
-- Context-aware mode selection based on exam restrictions
+### For Students
 
-### Secure Exam Mode
-- Patent-pending detection of app switching and unapproved activities
-- Maintains device openness for emergencies while preventing cheating
-- Real-time activity logging and server notification
-- Teacher-configurable calculator restrictions per exam
+- Multi-mode calculator (Basic, Scientific, Graphing)
+- Take secure exams with proctoring
+- View real-time feedback and grades
+- Track your learning progress
+- Join classrooms and access materials
 
-### Real-Time Analytics
-- Learning progress tracking across multiple math domains
-- Performance metrics for students and classes
-- Skill assessments and improvement insights
-- Exam history with detailed score breakdowns
+### For Teachers
 
-### Classroom Management
-- Teacher dashboards for class overview and management
-- Student roster management with performance tracking
-- Custom exam creation with question banks
-- Activity log review for exam integrity verification
+- Create and manage exams
+- Real-time exam monitoring with violation alerts
+- Instant grading and analytics
+- Monitor student performance across classrooms
+- Generate performance reports
 
-### Cloud Synchronization
-- Automatic sync of exam data and grades
-- Offline-first design ensures functionality without connectivity
-- Cross-device synchronization
-- Real-time updates during active sessions
+## The Patent
 
-## System Architecture
+GraphR implements a unique patent-based proctoring system:
 
-### Technology Stack
-- **Mobile Apps:** React Native with Expo (iOS & Android)
-- **Demo/Web:** Single-file HTML implementation for quick testing
-- **Backend:** Node.js/Express with real-time WebSocket support
-- **Database:** Firebase/PostgreSQL for cloud data storage
-- **State Management:** React Context API for predictable app state
-- **Offline Storage:** AsyncStorage for local data persistence
+- Detects when students switch apps during exams
+- Notifies teachers in real-time of violations
+- Logs all violations with timestamps
+- Allows emergency calls (student safety first)
+- Never locks the device
 
-### Project Structure
-```
-GraphR App Production/
-├── App.js                          # Main app entry point
-├── app.json                        # Expo configuration
-├── package.json                    # Dependencies and scripts
-├── GraphR_Demo.html               # Interactive web demo
-├── README.md                       # This file
-├── TECHNICAL_SUMMARY.md           # Detailed technical documentation
-│
-├── screens/                        # Screen components
-│   ├── AuthScreen.js              # Login/registration
-│   ├── StudentHomeScreen.js       # Student dashboard
-│   ├── TeacherDashboardScreen.js  # Teacher management
-│   ├── CalculatorScreen.js        # Calculator interface
-│   ├── ExamModeScreen.js          # Secure exam environment
-│   ├── AnalyticsScreen.js         # Performance metrics
-│   └── SettingsScreen.js          # User preferences
-│
-├── context/                        # State management
-│   ├── AuthContext.js             # Authentication state
-│   ├── ClassroomContext.js        # Classroom data
-│   └── ExamModeContext.js         # Exam session state
-│
-└── services/                       # Business logic
-    ├── DatabaseService.js         # Local data persistence
-    └── NetworkService.js          # API communication
-```
+This approach balances academic integrity with student safety and privacy.
 
 ## Getting Started
 
 ### Prerequisites
-- Node.js 14+ and npm
-- Expo CLI: `npm install -g expo-cli`
-- iOS Simulator or Android Emulator (or physical device)
+
+- Node.js 16+ and npm
+- Expo CLI (`npm install -g expo-cli`)
+- iOS or Android device/emulator
+- Firebase account with project
 
 ### Installation
+
 ```bash
 # Install dependencies
 npm install
+
+# Set environment variables
+# Update services/firebase.js with your Firebase credentials
 
 # Start development server
 npm start
@@ -102,131 +74,119 @@ npm run android
 npm run web
 ```
 
-### Demo
-Open `GraphR_Demo.html` in any web browser for an interactive walkthrough of the platform features without requiring installation.
+## Project Structure
 
-## Patent Technology
-
-### US 10,339,827 B2
-**Computer-Implemented System and Method for Administering an Examination**
-- Filed: November 1, 2016
-- Issued: July 2, 2019
-- Covers mobile-based exam administration with real-time activity monitoring
-
-### US 10,839,708 B2
-**Computer-Implemented System and Method for Administering an Examination** (Continuation)
-- Filed: May 8, 2019
-- Issued: November 17, 2020
-- Extends coverage to enhanced monitoring and improved detection algorithms
-
-## Key Innovation
-
-Unlike traditional lockdown browsers that restrict device functionality, GraphR uses intelligent monitoring to detect violations while keeping devices fully functional. This approach:
-
-1. Maintains student safety through available emergency communication
-2. Prevents cheating through real-time activity detection
-3. Respects student autonomy while enforcing academic integrity
-4. Provides teachers with comprehensive exam oversight
-
-## User Roles
-
-### Students
-- Access calculators and learning tools
-- Join classrooms using class codes
-- Take secure exams with activity monitoring
-- View personal performance analytics
-- Track learning progress across subjects
-
-### Teachers
-- Create and manage classrooms
-- Build custom exams with question banks
-- Configure per-exam calculator restrictions
-- Monitor exam activity in real-time
-- Review exam results and analytics
-- Identify cheating attempts through activity logs
-
-## Development Features
-
-### Comprehensive Comments
-Every component includes detailed docstring comments explaining:
-- Purpose and responsibilities
-- Key state management decisions
-- User interaction flows
-- Patent implementation details
-
-### Modular Architecture
-- Clear separation of concerns
-- Reusable context providers
-- Service layer for business logic
-- Easy to extend with new features
-
-### Offline Support
-- Exam data syncs automatically
-- Activity logs queue for transmission
-- App functions without connectivity
-- Automatic sync when connection restored
-
-### Real-Time Monitoring
-- Detects app switching and unapproved activities
-- Logs all student interactions with timestamps
-- Sends alerts to examination server
-- Maintains audit trail for integrity verification
-
-## Testing Credentials
-
-For development and testing:
-- Email: demo@graphr.edu
-- Password: demo123
-- Role: Student or Teacher
-
-## Production Deployment
-
-### iOS
-```bash
-eas build --platform ios --auto-submit
+```
+GraphR App Production/
+├── App.js                    # Main app orchestrator
+├── app.json                  # Expo configuration
+├── eas.json                  # EAS build configuration
+├── package.json              # Dependencies
+├── constants/
+│   └── graphr.js            # App constants & utilities
+├── screens/                  # 12+ screen components
+│   ├── SplashScreen.js
+│   ├── AuthScreen.js
+│   ├── CalculatorScreen.js
+│   ├── GraphingScreen.js
+│   ├── ExamModeScreen.js
+│   ├── ExamListScreen.js
+│   ├── ClassroomScreen.js
+│   ├── TeacherDashboardScreen.js
+│   ├── GradeBookScreen.js
+│   ├── AnalyticsScreen.js
+│   ├── ProfileScreen.js
+│   └── SettingsScreen.js
+├── services/                 # 7 services
+│   ├── auth.js              # Firebase authentication
+│   ├── firebase.js          # Firebase initialization
+│   ├── firestoreService.js  # Database operations
+│   ├── notifications.js     # Push notifications
+│   ├── examMonitor.js       # Patent proctoring (patent)
+│   ├── iap.js               # In-app purchases
+│   └── analyticsService.js  # Learning analytics
+├── legal/
+│   ├── privacy-policy.html
+│   └── terms-of-service.html
+├── firestore.rules          # Firestore security rules
+├── storage.rules            # Firebase storage rules
+└── SUBMIT_GUIDE.md          # App Store submission guide
 ```
 
-### Android
+## Technology Stack
+
+- **Frontend**: React Native with Expo
+- **Backend**: Firebase (Auth, Firestore, Storage)
+- **Payments**: React Native IAP (App Store + Google Play)
+- **Notifications**: Expo Notifications
+- **State Management**: React Hooks
+
+## Configuration
+
+### Firebase Setup
+
+1. Create a Firebase project at firebase.google.com
+2. Update `services/firebase.js` with your credentials
+3. Deploy security rules:
+
 ```bash
-eas build --platform android
+firebase deploy --only firestore:rules,storage
 ```
 
-### Web
-The app is web-compatible via Expo Web or can be packaged as a progressive web app.
+### App Store Submission
 
-## Security Considerations
+See `SUBMIT_GUIDE.md` for detailed instructions on submitting to:
+- Apple App Store
+- Google Play Store
 
-- All sensitive data encrypted in transit (TLS)
-- Password hashing using bcrypt
-- JWT tokens for session management
-- Activity logs signed and verified
-- FERPA/COPPA compliance built-in
+## Build & Deployment
 
-## Performance Optimization
+### Development Build
 
-- Lazy loading of screens and data
-- Memoization of expensive calculations
-- Efficient list rendering
-- Background task management
-- Network request batching
+```bash
+eas build --platform ios --profile development
+eas build --platform android --profile development
+```
 
-## Support and Documentation
+### Production Build
 
-- Technical documentation: See TECHNICAL_SUMMARY.md
-- Patent details: US 10,339,827 B2 and US 10,839,708 B2
-- API documentation: Available in backend repository
-- User guides: Embedded in-app help system
+```bash
+# iOS
+npm run build:ios
+npm run submit:ios
+
+# Android
+npm run build:android
+npm run submit:android
+```
+
+## COPPA Compliance
+
+GraphR is designed for educational use with minors. All implementations comply with the Children's Online Privacy Protection Act (COPPA):
+
+- No collection of personal information without parental consent
+- No advertising or behavioral tracking
+- School district control over data
+- Transparent privacy practices
+
+## Support
+
+For issues, feature requests, or questions:
+- Email: support@graphr.app
+- Website: graphr.app
 
 ## License
 
-Copyright 2026. All rights reserved.
+This project is proprietary software by GraphR App.
 
-GraphR is based on patented technology and is provided as-is for educational institutions and authorized users.
+## About
 
-## Contributing
-
-For bug reports, feature requests, or contributions, please contact the development team.
+**GraphR** - Calculating the Future of Education
+- Tagline: #CalculatingTheFuture
+- Phone bans endanger student safety and harm learning. GraphR is the solution.
 
 ---
 
-Built with precision for education. Calculating the future, one equation at a time.
+Built with passion for education. Every line of code serves students.
+
+Author: Pawan K Jajoo
