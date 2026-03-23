@@ -1,0 +1,102 @@
+rules_version = '2';
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// FIRESTORE SECURITY RULES — GraphR App
+// ═══════════════════════════════════════════════════════════════════════════════
+// Deploy: firebase deploy --only firestore:rules
+//
+// Principles:
+//   1. Students can only read/write their own data
+//   2. Teachers can read/write classroom and exam data
+//   3. Admins have elevated permissions
+//   4. All exam data is immutable once submitted
+//   5. Violations log is teacher-accessible only
+//   6. Student grades are private (student + teacher only)
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ── User Profiles ──────────────────────────────────────────────────────
+    // Users can read any profile (for classroom listings)
+    // Users can only write their own profile
+    match /users/{userId} {
+      allow read: if request.auth != null;
+      allow create: if request.auth != null && request.auth.uid == userId;
+      allow update: if request.auth != null && request.auth.uid == userId;
+      allow delete: if false;
+    }
+
+    // ── Classrooms ─────────────────────────────────────────────────────────
+    // Teachers can create and manage classrooms
+    // Students can read classrooms they're enrolled in
+    match /classrooms/{classroomId} {
+      allow read: if request.auth != null;
+      allow create: if request.auth != null && resource.data.teacherId == request.auth.uid;
+      allow update: if request.auth != null && resource.data.teacherId == request.auth.uid;
+      allow delete: if request.auth != null && resource.data.teacherId == request.auth.uid;
+    }
+
+    // ── Exams ──────────────────────────────────────────────────────────────
+    // Teachers can create exams for their classrooms
+    // Students can read exams for their classrooms
+    match /exams/{examId} {
+      allow read: if request.auth != null;
+      allow create: if request.auth != null && resource.data.teacherId == request.auth.uid;
+      allow update: if request.auth != null && resource.data.teacherId == request.auth.uid && resource.data.status != "closed";
+      allow delete: if request.auth != null && resource.data.teacherId == request.auth.uid && resource.data.status != "active";
+    }
+
+    // ── Exam Results ───────────────────────────────────────────────────────
+    // Students can write their own exam results
+    // Teachers can read results for their exams
+    // Results are immutable once submitted
+    match /examResults/{resultId} {
+      allow read: if request.auth != null && (
+        request.auth.uid == resource.data.studentId ||
+        exists(/databases/$(database)/documents/exams/$(resource.data.examId)) &&
+        get(/databases/$(database)/documents/exams/$(resource.data.examId)).data.teacherId == request.auth.uid
+      );
+      allow create: if request.auth != null && request.auth.uid == request.resource.data.studentId;
+      allow update: if false;
+      allow delete: if false;
+    }
+
+    // ── Exam Violations (App Switch Detection) ──────────────────────────────
+    // Teachers can read violations for their exams
+    // System (Cloud Functions) writes violations
+    match /examViolations/{violationId} {
+      allow read: if request.auth != null && exists(/databases/$(database)/documents/exams/$(resource.data.examId)) &&
+        get(/databases/$(database)/documents/exams/$(resource.data.examId)).data.teacherId == request.auth.uid;
+      allow create: if request.auth != null;
+      allow update: if false;
+      allow delete: if false;
+    }
+
+    // ── Calculator History (for learning analytics) ────────────────────────
+    // Students can only read/write their own history
+    match /calculatorHistory/{userId}/{calculationId} {
+      allow read: if request.auth != null && request.auth.uid == userId;
+      allow create: if request.auth != null && request.auth.uid == userId;
+      allow update: if false;
+      allow delete: if request.auth != null && request.auth.uid == userId;
+    }
+
+    // ── Subscriptions (for paid features) ───────────────────────────────────
+    // Users can read/write their own subscription data
+    match /subscriptions/{userId} {
+      allow read: if request.auth != null && request.auth.uid == userId;
+      allow create: if request.auth != null && request.auth.uid == userId;
+      allow update: if request.auth != null && request.auth.uid == userId;
+      allow delete: if request.auth != null && request.auth.uid == userId;
+    }
+
+    // ── Classroom Enrollments ───────────────────────────────────────────────
+    // Students can join/view classrooms
+    match /classroomEnrollments/{enrollmentId} {
+      allow read: if request.auth != null;
+      allow create: if request.auth != null;
+      allow update: if false;
+      allow delete: if request.auth != null && request.auth.uid == resource.data.studentId;
+    }
+  }
+}

@@ -1,430 +1,256 @@
 /**
- * Calculator Screen Component
+ * screens/CalculatorScreen.js
+ * ═══════════════════════════════════════════════════════════════════════════════
  *
- * Provides a full-featured interactive calculator with multiple modes:
- * - Basic Calculator: Standard arithmetic operations
- * - Scientific Calculator: Advanced math functions (trig, logs, etc)
- * - Graphing Mode: Visualize mathematical functions
- * - Statistics Mode: Data analysis and probability
+ * Calculator Screen - Multi-Mode Calculator
  *
- * Features derived from GraphR patents:
- * - Interactive calculator interface responsive to touch
- * - Display of multi-step calculations
- * - Real-time graphing with adjustable parameters
- * - Context-aware calculator selection (exam mode restrictions)
+ * Displays a fully functional calculator with three modes:
+ * • Basic: Simple arithmetic (add, subtract, multiply, divide)
+ * • Scientific: Trigonometry, logarithms, constants
+ * • Graphing: Visual equation graphing interface
+ *
+ * Core of the GraphR experience. Fast, accurate, beautiful.
  */
 
-import React, { useState, useCallback } from 'react';
+import React, { useState } from "react";
 import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  TouchableOpacity,
-  Dimensions,
-} from 'react-native';
-import { useExamMode } from '../context/ExamModeContext';
+  View, Text, TouchableOpacity, StyleSheet, FlatList, ScrollView,
+} from "react-native";
+import { COLORS, CALCULATOR_BUTTONS, evaluateExpression, formatNumber } from "../constants/graphr";
 
-const { width } = Dimensions.get('window');
-const BUTTON_WIDTH = (width - 40) / 4;
+export default function CalculatorScreen({
+  mode, onModeChange, display, onDisplayChange, history, onHistoryAdd, showToast,
+}) {
+  const [expression, setExpression] = useState("");
 
-const CalculatorScreen = () => {
-  const { examMode } = useExamMode();
-
-  // Calculator state management
-  const [display, setDisplay] = useState('0');
-  const [previousValue, setPreviousValue] = useState(null);
-  const [operation, setOperation] = useState(null);
-  const [waitingForNewValue, setWaitingForNewValue] = useState(false);
-  const [calculatorMode, setCalculatorMode] = useState('basic');
-  const [history, setHistory] = useState([]);
-
-  /**
-   * Handles numeric input to the calculator display
-   * Updates display value and manages calculation state
-   */
-  const handleNumberPress = useCallback((num) => {
-    if (waitingForNewValue) {
-      setDisplay(String(num));
-      setWaitingForNewValue(false);
+  const handleButtonPress = (button) => {
+    if (button === "=") {
+      try {
+        const result = evaluateExpression(expression);
+        if (isNaN(result)) {
+          showToast("Invalid expression");
+          return;
+        }
+        const formatted = formatNumber(result);
+        onDisplayChange(formatted);
+        onHistoryAdd({ expression, result: formatted });
+        setExpression("");
+      } catch (error) {
+        showToast("Calculation error");
+      }
+    } else if (button === "C") {
+      setExpression("");
+      onDisplayChange("0");
+    } else if (button === ".") {
+      if (!expression.includes(".")) {
+        setExpression(expression + button);
+      }
     } else {
-      setDisplay(display === '0' ? String(num) : display + num);
-    }
-  }, [display, waitingForNewValue]);
-
-  /**
-   * Handles decimal point input
-   * Ensures only one decimal point per number
-   */
-  const handleDecimal = useCallback(() => {
-    if (!display.includes('.')) {
-      setDisplay(display + '.');
-    }
-  }, [display]);
-
-  /**
-   * Processes arithmetic operations
-   * Stores current value and operation for later calculation
-   */
-  const handleOperation = useCallback((op) => {
-    const currentValue = parseFloat(display);
-
-    // If we already have a previous value and operation, calculate first
-    if (previousValue !== null && operation && !waitingForNewValue) {
-      const result = performCalculation(previousValue, currentValue, operation);
-      setDisplay(String(result));
-      setPreviousValue(result);
-    } else {
-      setPreviousValue(currentValue);
-    }
-
-    setOperation(op);
-    setWaitingForNewValue(true);
-  }, [display, previousValue, operation, waitingForNewValue]);
-
-  /**
-   * Performs basic arithmetic calculation
-   * Supports: addition, subtraction, multiplication, division
-   */
-  const performCalculation = (prev, current, op) => {
-    switch (op) {
-      case '+':
-        return prev + current;
-      case '-':
-        return prev - current;
-      case '*':
-        return prev * current;
-      case '/':
-        return prev !== 0 ? prev / current : 0;
-      default:
-        return current;
+      setExpression(expression + button);
+      onDisplayChange(expression + button || "0");
     }
   };
 
-  /**
-   * Equals button handler
-   * Completes the current calculation and displays result
-   */
-  const handleEquals = useCallback(() => {
-    if (previousValue !== null && operation) {
-      const currentValue = parseFloat(display);
-      const result = performCalculation(previousValue, currentValue, operation);
-
-      // Add to history for learning tracking
-      setHistory([
-        ...history,
-        {
-          expression: `${previousValue} ${operation} ${currentValue}`,
-          result: result,
-          timestamp: new Date().toISOString(),
-        },
-      ]);
-
-      setDisplay(String(result));
-      setPreviousValue(null);
-      setOperation(null);
-      setWaitingForNewValue(true);
-    }
-  }, [display, previousValue, operation, history]);
-
-  /**
-   * Clear all values and reset calculator state
-   */
-  const handleClear = useCallback(() => {
-    setDisplay('0');
-    setPreviousValue(null);
-    setOperation(null);
-    setWaitingForNewValue(false);
-  }, []);
-
-  /**
-   * Remove last digit from display
-   */
-  const handleBackspace = useCallback(() => {
-    if (display.length > 1) {
-      setDisplay(display.slice(0, -1));
-    } else {
-      setDisplay('0');
-    }
-  }, [display]);
-
-  /**
-   * Advanced math functions for scientific mode
-   * Trigonometric, logarithmic, and power operations
-   */
-  const handleScientificFunction = useCallback((func) => {
-    const value = parseFloat(display);
-    let result = 0;
-
-    switch (func) {
-      case 'sin':
-        result = Math.sin((value * Math.PI) / 180);
-        break;
-      case 'cos':
-        result = Math.cos((value * Math.PI) / 180);
-        break;
-      case 'tan':
-        result = Math.tan((value * Math.PI) / 180);
-        break;
-      case 'log':
-        result = Math.log10(value);
-        break;
-      case 'ln':
-        result = Math.log(value);
-        break;
-      case 'sqrt':
-        result = Math.sqrt(value);
-        break;
-      case '^2':
-        result = value * value;
-        break;
-      case 'pi':
-        result = Math.PI;
-        break;
-      default:
-        return;
-    }
-
-    setDisplay(String(result.toFixed(6)));
-    setWaitingForNewValue(true);
-  }, [display]);
-
-  /**
-   * Switch between calculator modes
-   * Different modes available based on exam restrictions
-   */
-  const CalculatorModes = {
-    basic: [
-      ['7', '8', '9', '/'],
-      ['4', '5', '6', '*'],
-      ['1', '2', '3', '-'],
-      ['0', '.', '=', '+'],
-    ],
-    scientific: [
-      ['sin', 'cos', 'tan', 'C'],
-      ['log', 'ln', 'sqrt', 'DEL'],
-      ['(', ')', '^2', 'pi'],
-      ['7', '8', '9', '/'],
-      ['4', '5', '6', '*'],
-      ['1', '2', '3', '-'],
-      ['0', '.', '=', '+'],
-    ],
+  const handleModeSwitch = (newMode) => {
+    setExpression("");
+    onDisplayChange("0");
+    onModeChange(newMode);
   };
 
-  const currentLayout = calculatorMode === 'basic'
-    ? CalculatorModes.basic
-    : CalculatorModes.scientific;
+  const getButtonsForMode = () => {
+    if (mode === "scientific") return CALCULATOR_BUTTONS.scientific;
+    return CALCULATOR_BUTTONS.basic;
+  };
 
-  // If in exam mode, may have restricted calculator modes
-  const isCalculatorRestricted = examMode?.restrictedCalculatorMode;
+  const buttons = getButtonsForMode();
 
   return (
-    <ScrollView style={styles.container}>
+    <View style={styles.container}>
+      {/* Mode Selector */}
       <View style={styles.modeSelector}>
-        <TouchableOpacity
-          style={[
-            styles.modeButton,
-            calculatorMode === 'basic' && styles.activeModeButton,
-          ]}
-          onPress={() => setCalculatorMode('basic')}
-          disabled={isCalculatorRestricted && isCalculatorRestricted !== 'basic'}
-        >
-          <Text style={styles.modeButtonText}>Basic</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={[
-            styles.modeButton,
-            calculatorMode === 'scientific' && styles.activeModeButton,
-          ]}
-          onPress={() => setCalculatorMode('scientific')}
-          disabled={isCalculatorRestricted && isCalculatorRestricted !== 'scientific'}
-        >
-          <Text style={styles.modeButtonText}>Scientific</Text>
-        </TouchableOpacity>
-      </View>
-
-      <View style={styles.displayContainer}>
-        <Text style={styles.displayText}>{display}</Text>
-      </View>
-
-      <View style={styles.calculatorGrid}>
-        {currentLayout.map((row, rowIndex) => (
-          <View key={rowIndex} style={styles.row}>
-            {row.map((btn) => {
-              let buttonStyle = styles.button;
-              let textStyle = styles.buttonText;
-              let onPress = null;
-
-              if (!isNaN(btn)) {
-                onPress = () => handleNumberPress(btn);
-                buttonStyle = [buttonStyle, styles.numberButton];
-              } else if (btn === '.') {
-                onPress = handleDecimal;
-                buttonStyle = [buttonStyle, styles.numberButton];
-              } else if (btn === 'C') {
-                onPress = handleClear;
-                buttonStyle = [buttonStyle, styles.operationButton];
-                textStyle = [textStyle, styles.operationText];
-              } else if (btn === 'DEL') {
-                onPress = handleBackspace;
-                buttonStyle = [buttonStyle, styles.operationButton];
-                textStyle = [textStyle, styles.operationText];
-              } else if (btn === '=') {
-                onPress = handleEquals;
-                buttonStyle = [buttonStyle, styles.equalsButton];
-                textStyle = [textStyle, styles.equalsText];
-              } else if (['+', '-', '*', '/'].includes(btn)) {
-                onPress = () => handleOperation(btn);
-                buttonStyle = [buttonStyle, styles.operationButton];
-                textStyle = [textStyle, styles.operationText];
-              } else if (
-                ['sin', 'cos', 'tan', 'log', 'ln', 'sqrt', '^2', 'pi', '(', ')'].includes(btn)
-              ) {
-                onPress = () => handleScientificFunction(btn);
-                buttonStyle = [buttonStyle, styles.scientificButton];
-                textStyle = [textStyle, styles.scientificText];
-              }
-
-              return (
-                <TouchableOpacity
-                  key={btn}
-                  style={buttonStyle}
-                  onPress={onPress}
-                  disabled={!onPress}
-                >
-                  <Text style={textStyle}>{btn}</Text>
-                </TouchableOpacity>
-              );
-            })}
-          </View>
+        {["basic", "scientific", "graphing"].map((m) => (
+          <TouchableOpacity
+            key={m}
+            style={[styles.modeButton, mode === m && styles.modeButtonActive]}
+            onPress={() => handleModeSwitch(m)}
+          >
+            <Text style={[styles.modeText, mode === m && styles.modeTextActive]}>
+              {m.charAt(0).toUpperCase() + m.slice(1)}
+            </Text>
+          </TouchableOpacity>
         ))}
       </View>
 
-      {/* History section showing recent calculations */}
+      {/* Display */}
+      <View style={styles.displaySection}>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.expressionScroll}>
+          <Text style={styles.expression}>{expression || "0"}</Text>
+        </ScrollView>
+        <Text style={styles.display}>{display}</Text>
+      </View>
+
+      {/* History */}
       {history.length > 0 && (
-        <View style={styles.historyContainer}>
-          <Text style={styles.historyTitle}>Calculation History</Text>
-          {history.slice(-5).reverse().map((item, index) => (
-            <Text key={index} style={styles.historyItem}>
-              {item.expression} = {item.result}
-            </Text>
-          ))}
+        <View style={styles.historySection}>
+          <Text style={styles.historyTitle}>History</Text>
+          <FlatList
+            data={history}
+            keyExtractor={(item, index) => index.toString()}
+            renderItem={({ item }) => (
+              <Text style={styles.historyItem}>
+                {item.expression} = {item.result}
+              </Text>
+            )}
+            scrollEnabled={false}
+            maxHeight={100}
+          />
         </View>
       )}
-    </ScrollView>
+
+      {/* Calculator Buttons */}
+      <View style={styles.buttonsSection}>
+        {buttons.map((row, rowIndex) => (
+          <View key={rowIndex} style={styles.buttonRow}>
+            {row.map((button) => (
+              <TouchableOpacity
+                key={button}
+                style={[
+                  styles.button,
+                  (button === "=" || button === "C") && styles.functionButton,
+                  ["/", "*", "-", "+"].includes(button) && styles.operatorButton,
+                ]}
+                onPress={() => handleButtonPress(button)}
+              >
+                <Text
+                  style={[
+                    styles.buttonText,
+                    (button === "=" || button === "C") && styles.functionButtonText,
+                    ["/", "*", "-", "+"].includes(button) && styles.operatorButtonText,
+                  ]}
+                >
+                  {button}
+                </Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+        ))}
+      </View>
+    </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F5F5F5',
-    padding: 10,
+    backgroundColor: COLORS.dark,
+    padding: 16,
+    gap: 12,
   },
   modeSelector: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 15,
-    gap: 10,
+    flexDirection: "row",
+    gap: 8,
+    marginTop: 4,
   },
   modeButton: {
     flex: 1,
-    paddingVertical: 10,
-    paddingHorizontal: 15,
-    backgroundColor: '#ECF0F1',
+    paddingVertical: 8,
+    borderRadius: 6,
+    backgroundColor: COLORS.darkSecondary,
+    alignItems: "center",
+    borderWidth: 1,
+    borderColor: COLORS.border,
+  },
+  modeButtonActive: {
+    backgroundColor: COLORS.primary,
+    borderColor: COLORS.primary,
+  },
+  modeText: {
+    fontFamily: "Inter_600SemiBold",
+    fontSize: 11,
+    color: COLORS.textSecondary,
+  },
+  modeTextActive: {
+    color: COLORS.text,
+  },
+  displaySection: {
+    backgroundColor: COLORS.darkSecondary,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: COLORS.border,
+    padding: 16,
+    gap: 6,
+    minHeight: 100,
+  },
+  expressionScroll: {
+    maxHeight: 30,
+  },
+  expression: {
+    fontFamily: "Inter_400Regular",
+    fontSize: 13,
+    color: COLORS.textSecondary,
+  },
+  display: {
+    fontFamily: "Inter_700Bold",
+    fontSize: 32,
+    color: COLORS.primary,
+  },
+  historySection: {
+    backgroundColor: COLORS.darkSecondary,
     borderRadius: 8,
     borderWidth: 1,
-    borderColor: '#BDC3C7',
+    borderColor: COLORS.border,
+    padding: 12,
+    maxHeight: 120,
   },
-  activeModeButton: {
-    backgroundColor: '#3498DB',
-    borderColor: '#2980B9',
+  historyTitle: {
+    fontFamily: "Inter_600SemiBold",
+    fontSize: 11,
+    color: COLORS.textSecondary,
+    textTransform: "uppercase",
+    marginBottom: 8,
   },
-  modeButtonText: {
-    textAlign: 'center',
-    fontWeight: '600',
-    color: '#2C3E50',
+  historyItem: {
+    fontFamily: "Inter_400Regular",
+    fontSize: 12,
+    color: COLORS.text,
+    paddingVertical: 2,
   },
-  displayContainer: {
-    backgroundColor: '#2C3E50',
-    borderRadius: 10,
-    padding: 20,
-    marginBottom: 20,
-    minHeight: 80,
-    justifyContent: 'center',
+  buttonsSection: {
+    flex: 1,
+    gap: 8,
   },
-  displayText: {
-    color: '#ECF0F1',
-    fontSize: 32,
-    fontWeight: 'bold',
-    textAlign: 'right',
-  },
-  calculatorGrid: {
-    marginBottom: 20,
-  },
-  row: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 10,
-    gap: 10,
+  buttonRow: {
+    flexDirection: "row",
+    gap: 8,
+    flex: 1,
   },
   button: {
     flex: 1,
-    height: BUTTON_WIDTH,
+    backgroundColor: COLORS.darkSecondary,
     borderRadius: 8,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#ECF0F1',
-  },
-  numberButton: {
-    backgroundColor: '#FFFFFF',
     borderWidth: 1,
-    borderColor: '#BDC3C7',
+    borderColor: COLORS.border,
+    justifyContent: "center",
+    alignItems: "center",
+    minHeight: 48,
+  },
+  functionButton: {
+    backgroundColor: "rgba(15, 157, 88, 0.2)",
+    borderColor: COLORS.success,
+  },
+  operatorButton: {
+    backgroundColor: "rgba(26, 115, 232, 0.2)",
+    borderColor: COLORS.primary,
   },
   buttonText: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: '#2C3E50',
+    fontFamily: "Inter_700Bold",
+    fontSize: 16,
+    color: COLORS.text,
   },
-  operationButton: {
-    backgroundColor: '#E74C3C',
+  functionButtonText: {
+    color: COLORS.success,
   },
-  operationText: {
-    color: '#FFFFFF',
-    fontWeight: '700',
-  },
-  equalsButton: {
-    backgroundColor: '#27AE60',
-  },
-  equalsText: {
-    color: '#FFFFFF',
-    fontWeight: '700',
-  },
-  scientificButton: {
-    backgroundColor: '#9B59B6',
-  },
-  scientificText: {
-    color: '#FFFFFF',
-    fontSize: 14,
-    fontWeight: '600',
-  },
-  historyContainer: {
-    backgroundColor: '#FFFFFF',
-    borderRadius: 8,
-    padding: 15,
-    marginBottom: 20,
-  },
-  historyTitle: {
-    fontWeight: '700',
-    color: '#2C3E50',
-    marginBottom: 10,
-  },
-  historyItem: {
-    color: '#34495E',
-    fontSize: 14,
-    marginVertical: 4,
-    fontFamily: 'monospace',
+  operatorButtonText: {
+    color: COLORS.primary,
   },
 });
-
-export default CalculatorScreen;

@@ -1,348 +1,245 @@
 /**
- * Settings Screen Component
+ * screens/SettingsScreen.js
+ * ═══════════════════════════════════════════════════════════════════════════════
  *
- * User settings and preferences management.
- * Handles account settings, notifications, and app preferences.
+ * Settings Screen - App Configuration
  *
- * Features:
- * - Account management
- * - Notification preferences
- * - Privacy settings
- * - About and help
- * - Sign out functionality
+ * Settings management:
+ * • Calculator preferences
+ * • Notification settings
+ * • Privacy & security
+ * • Accessibility options
+ * • About & legal
+ *
+ * Customize your GraphR experience. Your preferences, your way.
  */
 
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  TouchableOpacity,
-  Switch,
-  Alert,
-} from 'react-native';
-import { useAuth } from '../context/AuthContext';
+  View, Text, TouchableOpacity, StyleSheet, ScrollView, Switch,
+} from "react-native";
+import { COLORS } from "../constants/graphr";
 
-const SettingsScreen = () => {
-  const { authState, signOut } = useAuth();
+export default function SettingsScreen({ showToast }) {
+  const [notificationsEnabled, setNotificationsEnabled] = useState(true);
+  const [locationEnabled, setLocationEnabled] = useState(false);
+  const [darkMode, setDarkMode] = useState(true);
 
-  const [notifications, setNotifications] = useState({
-    examReminders: true,
-    classroomUpdates: true,
-    performanceAlerts: true,
-    pushNotifications: false,
-  });
-
-  const [privacy, setPrivacy] = useState({
-    shareProgress: true,
-    dataCollection: true,
-  });
-
-  /**
-   * Toggle notification preference
-   */
-  const toggleNotification = (key) => {
-    setNotifications({
-      ...notifications,
-      [key]: !notifications[key],
-    });
-  };
-
-  /**
-   * Toggle privacy preference
-   */
-  const togglePrivacy = (key) => {
-    setPrivacy({
-      ...privacy,
-      [key]: !privacy[key],
-    });
-  };
-
-  /**
-   * Handle sign out
-   */
-  const handleSignOut = async () => {
-    Alert.alert(
-      'Sign Out',
-      'Are you sure you want to sign out?',
-      [
-        {
-          text: 'Cancel',
-          onPress: () => {},
-          style: 'cancel',
-        },
-        {
-          text: 'Sign Out',
-          onPress: async () => {
-            await signOut();
-          },
-          style: 'destructive',
-        },
-      ]
-    );
-  };
+  const renderSettingItem = ({ label, value, onToggle, isToggle = false }) => (
+    <View style={styles.settingItem}>
+      <View>
+        <Text style={styles.settingLabel}>{label}</Text>
+      </View>
+      {isToggle ? (
+        <Switch
+          value={value}
+          onValueChange={onToggle}
+          thumbColor={value ? COLORS.primary : COLORS.textMuted}
+          trackColor={{ false: COLORS.darkTertiary, true: "rgba(26, 115, 232, 0.3)" }}
+        />
+      ) : (
+        <Text style={styles.settingValue}>{value}</Text>
+      )}
+    </View>
+  );
 
   return (
-    <ScrollView style={styles.container}>
-      {/* Account Section */}
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Account</Text>
+    <ScrollView style={styles.container} contentContainerStyle={styles.content}>
+      {/* Header */}
+      <View style={styles.headerSection}>
+        <Text style={styles.headerTitle}>Settings</Text>
+      </View>
 
-        <View style={styles.settingItem}>
-          <Text style={styles.settingLabel}>Email</Text>
-          <Text style={styles.settingValue}>{authState.userEmail}</Text>
-        </View>
+      {/* General */}
+      <View style={styles.settingsGroup}>
+        <Text style={styles.groupTitle}>General</Text>
+        {renderSettingItem({
+          label: "Dark Mode",
+          value: darkMode,
+          onToggle: () => setDarkMode(!darkMode),
+          isToggle: true,
+        })}
+        {renderSettingItem({
+          label: "App Version",
+          value: "1.0.0",
+        })}
+      </View>
 
-        <View style={styles.settingItem}>
-          <Text style={styles.settingLabel}>Name</Text>
-          <Text style={styles.settingValue}>{authState.userName}</Text>
-        </View>
+      {/* Calculator */}
+      <View style={styles.settingsGroup}>
+        <Text style={styles.groupTitle}>Calculator</Text>
+        {renderSettingItem({
+          label: "Default Mode",
+          value: "Basic",
+        })}
+        {renderSettingItem({
+          label: "Decimal Places",
+          value: "6",
+        })}
+        {renderSettingItem({
+          label: "Angle Unit",
+          value: "Degrees",
+        })}
+      </View>
 
-        <TouchableOpacity style={styles.buttonSetting}>
-          <Text style={styles.buttonSettingText}>Change Password</Text>
+      {/* Notifications */}
+      <View style={styles.settingsGroup}>
+        <Text style={styles.groupTitle}>Notifications</Text>
+        {renderSettingItem({
+          label: "Exam Reminders",
+          value: notificationsEnabled,
+          onToggle: () => setNotificationsEnabled(!notificationsEnabled),
+          isToggle: true,
+        })}
+        {renderSettingItem({
+          label: "Grade Notifications",
+          value: notificationsEnabled,
+          onToggle: () => setNotificationsEnabled(!notificationsEnabled),
+          isToggle: true,
+        })}
+        {renderSettingItem({
+          label: "Classroom Updates",
+          value: notificationsEnabled,
+          onToggle: () => setNotificationsEnabled(!notificationsEnabled),
+          isToggle: true,
+        })}
+      </View>
+
+      {/* Privacy & Security */}
+      <View style={styles.settingsGroup}>
+        <Text style={styles.groupTitle}>Privacy & Security</Text>
+        {renderSettingItem({
+          label: "Location Services",
+          value: locationEnabled,
+          onToggle: () => setLocationEnabled(!locationEnabled),
+          isToggle: true,
+        })}
+        <TouchableOpacity style={styles.settingItem}>
+          <Text style={styles.settingLabel}>Change Password</Text>
+          <Text style={styles.settingValue}>→</Text>
         </TouchableOpacity>
-
-        <TouchableOpacity style={styles.buttonSetting}>
-          <Text style={styles.buttonSettingText}>Update Profile</Text>
+        <TouchableOpacity style={styles.settingItem}>
+          <Text style={styles.settingLabel}>Manage Permissions</Text>
+          <Text style={styles.settingValue}>→</Text>
         </TouchableOpacity>
       </View>
 
-      {/* Notifications Section */}
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Notifications</Text>
-
-        <View style={styles.toggleSetting}>
-          <Text style={styles.toggleLabel}>Exam Reminders</Text>
-          <Switch
-            value={notifications.examReminders}
-            onValueChange={() => toggleNotification('examReminders')}
-            trackColor={{ false: '#ECF0F1', true: '#95A5A6' }}
-            thumbColor={notifications.examReminders ? '#3498DB' : '#FFFFFF'}
-          />
-        </View>
-
-        <View style={styles.toggleSetting}>
-          <Text style={styles.toggleLabel}>Classroom Updates</Text>
-          <Switch
-            value={notifications.classroomUpdates}
-            onValueChange={() => toggleNotification('classroomUpdates')}
-            trackColor={{ false: '#ECF0F1', true: '#95A5A6' }}
-            thumbColor={notifications.classroomUpdates ? '#3498DB' : '#FFFFFF'}
-          />
-        </View>
-
-        <View style={styles.toggleSetting}>
-          <Text style={styles.toggleLabel}>Performance Alerts</Text>
-          <Switch
-            value={notifications.performanceAlerts}
-            onValueChange={() => toggleNotification('performanceAlerts')}
-            trackColor={{ false: '#ECF0F1', true: '#95A5A6' }}
-            thumbColor={notifications.performanceAlerts ? '#3498DB' : '#FFFFFF'}
-          />
-        </View>
-
-        <View style={styles.toggleSetting}>
-          <Text style={styles.toggleLabel}>Push Notifications</Text>
-          <Switch
-            value={notifications.pushNotifications}
-            onValueChange={() => toggleNotification('pushNotifications')}
-            trackColor={{ false: '#ECF0F1', true: '#95A5A6' }}
-            thumbColor={notifications.pushNotifications ? '#3498DB' : '#FFFFFF'}
-          />
-        </View>
+      {/* Accessibility */}
+      <View style={styles.settingsGroup}>
+        <Text style={styles.groupTitle}>Accessibility</Text>
+        {renderSettingItem({
+          label: "Large Text",
+          value: false,
+          onToggle: () => {},
+          isToggle: true,
+        })}
+        {renderSettingItem({
+          label: "High Contrast",
+          value: false,
+          onToggle: () => {},
+          isToggle: true,
+        })}
       </View>
 
-      {/* Privacy Section */}
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Privacy & Data</Text>
-
-        <View style={styles.toggleSetting}>
-          <View style={styles.toggleLabelContainer}>
-            <Text style={styles.toggleLabel}>Share Learning Progress</Text>
-            <Text style={styles.toggleDesc}>
-              Allow teachers to view your progress
-            </Text>
-          </View>
-          <Switch
-            value={privacy.shareProgress}
-            onValueChange={() => togglePrivacy('shareProgress')}
-            trackColor={{ false: '#ECF0F1', true: '#95A5A6' }}
-            thumbColor={privacy.shareProgress ? '#3498DB' : '#FFFFFF'}
-          />
-        </View>
-
-        <View style={styles.toggleSetting}>
-          <View style={styles.toggleLabelContainer}>
-            <Text style={styles.toggleLabel}>Data Collection</Text>
-            <Text style={styles.toggleDesc}>
-              Help improve the app with usage analytics
-            </Text>
-          </View>
-          <Switch
-            value={privacy.dataCollection}
-            onValueChange={() => togglePrivacy('dataCollection')}
-            trackColor={{ false: '#ECF0F1', true: '#95A5A6' }}
-            thumbColor={privacy.dataCollection ? '#3498DB' : '#FFFFFF'}
-          />
-        </View>
-
-        <TouchableOpacity style={styles.buttonSetting}>
-          <Text style={styles.buttonSettingText}>Privacy Policy</Text>
+      {/* About */}
+      <View style={styles.settingsGroup}>
+        <Text style={styles.groupTitle}>About</Text>
+        <TouchableOpacity style={styles.settingItem}>
+          <Text style={styles.settingLabel}>Privacy Policy</Text>
+          <Text style={styles.settingValue}>→</Text>
         </TouchableOpacity>
-
-        <TouchableOpacity style={styles.buttonSetting}>
-          <Text style={styles.buttonSettingText}>Terms of Service</Text>
+        <TouchableOpacity style={styles.settingItem}>
+          <Text style={styles.settingLabel}>Terms of Service</Text>
+          <Text style={styles.settingValue}>→</Text>
         </TouchableOpacity>
-      </View>
-
-      {/* Display & Appearance */}
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Display</Text>
-
-        <View style={styles.toggleSetting}>
-          <Text style={styles.toggleLabel}>Dark Mode</Text>
-          <Switch
-            value={false}
-            onValueChange={() => {}}
-            trackColor={{ false: '#ECF0F1', true: '#95A5A6' }}
-            thumbColor="#FFFFFF"
-          />
-        </View>
-      </View>
-
-      {/* About Section */}
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>About</Text>
-
-        <View style={styles.settingItem}>
-          <Text style={styles.settingLabel}>Version</Text>
-          <Text style={styles.settingValue}>1.0.0</Text>
-        </View>
-
-        <View style={styles.settingItem}>
-          <Text style={styles.settingLabel}>Build</Text>
-          <Text style={styles.settingValue}>2026.03.001</Text>
-        </View>
-
-        <TouchableOpacity style={styles.buttonSetting}>
-          <Text style={styles.buttonSettingText}>Help & Support</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.buttonSetting}>
-          <Text style={styles.buttonSettingText}>Send Feedback</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.buttonSetting}>
-          <Text style={styles.buttonSettingText}>Check for Updates</Text>
-        </TouchableOpacity>
-      </View>
-
-      {/* Sign Out Section */}
-      <View style={styles.section}>
-        <TouchableOpacity
-          style={styles.signOutButton}
-          onPress={handleSignOut}
-        >
-          <Text style={styles.signOutButtonText}>Sign Out</Text>
+        <TouchableOpacity style={styles.settingItem}>
+          <Text style={styles.settingLabel}>Contact Support</Text>
+          <Text style={styles.settingValue}>→</Text>
         </TouchableOpacity>
       </View>
 
       {/* Footer */}
       <View style={styles.footer}>
         <Text style={styles.footerText}>
-          GraphR v1.0 | Made with precision for education
+          GraphR v1.0.0 by Insperion Technologies, LLC
+        </Text>
+        <Text style={styles.footerSubtext}>
+          Calculating the future of education
         </Text>
       </View>
     </ScrollView>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F5F5F5',
+    backgroundColor: COLORS.dark,
   },
-  section: {
-    backgroundColor: '#FFFFFF',
-    marginBottom: 10,
-    paddingHorizontal: 15,
-    paddingVertical: 15,
+  content: {
+    padding: 16,
+    gap: 24,
   },
-  sectionTitle: {
-    fontSize: 16,
-    fontWeight: '700',
-    color: '#2C3E50',
-    marginBottom: 15,
+  headerSection: {
+    gap: 4,
+    marginBottom: 8,
   },
-  settingItem: {
-    paddingVertical: 12,
-    borderBottomWidth: 1,
-    borderBottomColor: '#ECF0F1',
+  headerTitle: {
+    fontFamily: "Inter_700Bold",
+    fontSize: 20,
+    color: COLORS.text,
   },
-  settingLabel: {
-    fontSize: 13,
-    color: '#7F8C8D',
+  settingsGroup: {
+    gap: 10,
+  },
+  groupTitle: {
+    fontFamily: "Inter_700Bold",
+    fontSize: 12,
+    color: COLORS.textSecondary,
+    textTransform: "uppercase",
+    letterSpacing: 0.5,
     marginBottom: 4,
   },
-  settingValue: {
-    fontSize: 15,
-    fontWeight: '600',
-    color: '#2C3E50',
-  },
-  toggleSetting: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingVertical: 12,
-    borderBottomWidth: 1,
-    borderBottomColor: '#ECF0F1',
-  },
-  toggleLabelContainer: {
-    flex: 1,
-    marginRight: 15,
-  },
-  toggleLabel: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: '#2C3E50',
-    marginBottom: 2,
-  },
-  toggleDesc: {
-    fontSize: 12,
-    color: '#7F8C8D',
-    marginTop: 4,
-  },
-  buttonSetting: {
-    paddingVertical: 14,
-    paddingHorizontal: 0,
-    borderBottomWidth: 1,
-    borderBottomColor: '#ECF0F1',
-  },
-  buttonSettingText: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: '#3498DB',
-  },
-  signOutButton: {
-    paddingVertical: 14,
-    backgroundColor: '#E74C3C',
+  settingItem: {
+    backgroundColor: COLORS.darkSecondary,
     borderRadius: 8,
-    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: COLORS.border,
+    paddingVertical: 12,
+    paddingHorizontal: 12,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
-  signOutButtonText: {
-    fontSize: 16,
-    fontWeight: '700',
-    color: '#FFFFFF',
+  settingLabel: {
+    fontFamily: "Inter_600SemiBold",
+    fontSize: 12,
+    color: COLORS.text,
+  },
+  settingValue: {
+    fontFamily: "Inter_400Regular",
+    fontSize: 11,
+    color: COLORS.textSecondary,
   },
   footer: {
     paddingVertical: 20,
-    alignItems: 'center',
+    alignItems: "center",
+    gap: 4,
+    borderTopWidth: 1,
+    borderTopColor: COLORS.border,
+    marginTop: 12,
   },
   footerText: {
-    fontSize: 12,
-    color: '#7F8C8D',
+    fontFamily: "Inter_600SemiBold",
+    fontSize: 11,
+    color: COLORS.textSecondary,
+    textAlign: "center",
+  },
+  footerSubtext: {
+    fontFamily: "Inter_400Regular",
+    fontSize: 10,
+    color: COLORS.textMuted,
+    textAlign: "center",
+    fontStyle: "italic",
   },
 });
-
-export default SettingsScreen;
