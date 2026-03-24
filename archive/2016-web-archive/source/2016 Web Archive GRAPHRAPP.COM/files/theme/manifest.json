@@ -1,0 +1,13 @@
+ {
+	"responsive": true,
+	"tmpSocialIconFont": true,
+	"enableEditorJS": true,
+	"description": "Brisk is a crisp and colorful theme that gives  you a fresh new space for design expression. Brisk delivers practical design, along with an undeniable sense of style, providing you with all the tools needed to build a truly unique website.",
+	"features": [
+		"responsive",
+		"css-buttons",
+		"social-icons",
+		"full-width-header",
+		"navigation-side"
+	]
+}
