@@ -1,0 +1,147 @@
+GraphR-App Custom License
+Copyright (c) 2026 Pushstart LLC. All Rights Reserved.
+
+PATENT NOTICE: This software is covered by one or more patents and/or
+patent-pending applications owned by Pushstart LLC. All patent rights
+are expressly reserved.
+
+================================================================================
+PART I — LIMITED EDUCATIONAL USE LICENSE (Apache 2.0 Base with Restrictions)
+================================================================================
+
+Subject to the terms and conditions of this License, Pushstart LLC hereby
+grants you a limited, non-exclusive, non-transferable, non-sublicensable,
+revocable license to use this software and associated documentation files
+(the "Software") solely for non-commercial educational and academic
+purposes, including classroom instruction, academic research, and personal
+learning.
+
+This educational use license is based on the Apache License, Version 2.0,
+with the following critical modifications and additional restrictions:
+
+  1. EDUCATIONAL USE ONLY. You may use, study, and run the Software
+     exclusively for bona fide educational, academic, or personal learning
+     purposes. Any use outside of a non-commercial educational context is
+     strictly prohibited.
+
+  2. NO MODIFICATION OR DERIVATIVE WORKS. You may NOT modify, adapt,
+     translate, reverse engineer, decompile, disassemble, or create
+     derivative works based on the Software, in whole or in part.
+
+  3. NO REDISTRIBUTION. You may NOT distribute, sublicense, lease, rent,
+     loan, sell, resell, or otherwise transfer the Software or any copy
+     thereof to any third party, whether in original or modified form.
+
+  4. NO COMMERCIAL USE. You may NOT use the Software, or any portion
+     thereof, for any commercial purpose whatsoever, including but not
+     limited to: selling, offering for sale, licensing, sublicensing,
+     renting, or leasing the Software; incorporating the Software into
+     any product or service offered for sale or compensation; using the
+     Software to provide services to third parties for compensation; or
+     using the Software in any revenue-generating activity.
+
+  5. PATENT RIGHTS RESERVED. No license, express or implied, is granted
+     under any patent, patent application, or other intellectual property
+     right of Pushstart LLC, except the limited right to use the Software
+     for educational purposes as expressly stated herein.
+
+  6. ATTRIBUTION REQUIRED. Any permitted educational use must include
+     clear and prominent attribution to Pushstart LLC as the original
+     author and copyright holder of the Software, including a link to the
+     original repository.
+
+================================================================================
+PART II — COMMONS CLAUSE RESTRICTION
+================================================================================
+
+"Commons Clause" License Condition v1.0
+
+The Software is provided to you by the Licensor under the License, as
+defined below, subject to the following condition.
+
+Without limiting other conditions in the License, the grant of rights
+under the License will not include, and the License does not grant to you,
+the right to Sell the Software.
+
+For purposes of the foregoing, "Sell" means practicing any or all of the
+rights granted to you under the License to provide to third parties, for
+a fee or other consideration (including without limitation fees for
+hosting or consulting/support services related to the Software), a
+product or service whose value derives, entirely or substantially, from
+the functionality of the Software. Any license notice or attribution
+required by the License must also include this Commons Clause License
+Condition notice.
+
+  Licensor: Pushstart LLC
+  Software: GraphR-App
+  License: Custom Educational Use License (this document)
+
+================================================================================
+PART III — VIEW-ONLY / SOURCE-AVAILABLE TERMS
+================================================================================
+
+The source code of this Software is made available for inspection purposes
+only ("Source-Available"). This visibility does NOT constitute a grant of
+any rights beyond those expressly stated in Part I above. Specifically:
+
+  1. VIEW-ONLY ACCESS. You may view and read the source code solely for
+     the purpose of understanding how the Software works. This right of
+     inspection does not include any right to use, copy, modify,
+     distribute, or create derivative works from the source code.
+
+  2. NO COPYING. You may NOT copy, reproduce, duplicate, or store the
+     source code in any form, except as may be incidentally required by
+     your web browser or version control tool to display the code for
+     viewing purposes.
+
+  3. NO FORKING. You may NOT fork, clone for development purposes, or
+     create any derivative repository based on this Software, except for
+     the sole purpose of submitting bug reports or security
+     vulnerability disclosures to Pushstart LLC.
+
+  4. NO REVERSE ENGINEERING. You may NOT reverse engineer, decompile,
+     disassemble, or otherwise attempt to derive the source code,
+     algorithms, data structures, or trade secrets embodied in any
+     compiled or executable version of the Software.
+
+  5. NO COMMERCIAL EXPLOITATION. Any commercial exploitation of the
+     source code, including but not limited to incorporating ideas,
+     algorithms, patterns, or code snippets into competing products, is
+     strictly prohibited and constitutes infringement of Pushstart LLC's
+     intellectual property rights.
+
+================================================================================
+PART IV — GENERAL TERMS
+================================================================================
+
+TERMINATION. This License is effective until terminated. Your rights under
+this License will terminate automatically without notice if you fail to
+comply with any of its terms. Upon termination, you must immediately
+cease all use of the Software and destroy all copies in your possession.
+
+DISCLAIMER OF WARRANTY. THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY
+OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NONINFRINGEMENT.
+
+LIMITATION OF LIABILITY. IN NO EVENT SHALL PUSHSTART LLC OR ITS AUTHORS
+BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+GOVERNING LAW. This License shall be governed by and construed in
+accordance with the laws of the State of Texas, without regard to its
+conflict of laws provisions. Any dispute arising under this License shall
+be subject to the exclusive jurisdiction of the courts located in Travis
+County, Texas.
+
+ENTIRE AGREEMENT. This License constitutes the entire agreement between
+you and Pushstart LLC regarding the Software and supersedes all prior or
+contemporaneous understandings regarding such subject matter.
+
+CONTACT. For commercial licensing inquiries, partnership opportunities,
+or permission requests, contact: pawan@pushstartsims.com
+
+================================================================================
+Pushstart LLC — All Rights Reserved
+================================================================================
