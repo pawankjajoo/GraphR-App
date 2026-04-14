@@ -1,14 +1,11 @@
-/**
+/*
  * screens/CalculatorScreen.js
- * ═══════════════════════════════════════════════════════════════════════════════
  *
  * Calculator Screen - Multi-Mode Calculator
- *
  * Displays a fully functional calculator with three modes:
  * • Basic: Simple arithmetic (add, subtract, multiply, divide)
  * • Scientific: Trigonometry, logarithms, constants
  * • Graphing: Visual equation graphing interface
- *
  * Core of the GraphR experience. Fast, accurate, beautiful.
  */
 
