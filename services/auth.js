@@ -1,16 +1,13 @@
 /**
  * services/auth.js
- * ═══════════════════════════════════════════════════════════════════════════════
  *
  * Authentication Service
- *
  * Handles all authentication operations:
  * • Email/password sign up & sign in
  * • Google SSO integration
  * • Auth state management
  * • User session handling
  * • Sign out
- *
  * Secure authentication. Student safety first.
  */
 
@@ -20,19 +17,44 @@ import {
   signOut as firebaseSignOut, onAuthStateChanged, signInWithCredential,
 } from "firebase/auth";
 
-// Firebase configuration (placeholder - replace with your config)
+// TODO: Replace with your actual Firebase configuration
+// Get your config from Firebase Console: https://console.firebase.google.com/
+// Project Settings > Your apps > Config
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "graphr-app.firebaseapp.com",
-  projectId: "graphr-app",
-  storageBucket: "graphr-app.appspot.com",
-  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-  appId: "YOUR_APP_ID",
+  apiKey: "TODO_REPLACE_WITH_YOUR_API_KEY",
+  authDomain: "TODO_REPLACE_WITH_YOUR_AUTH_DOMAIN",
+  projectId: "TODO_REPLACE_WITH_YOUR_PROJECT_ID",
+  storageBucket: "TODO_REPLACE_WITH_YOUR_STORAGE_BUCKET",
+  messagingSenderId: "TODO_REPLACE_WITH_YOUR_MESSAGING_SENDER_ID",
+  appId: "TODO_REPLACE_WITH_YOUR_APP_ID",
+};
+
+// Validate Firebase config
+const validateFirebaseConfig = () => {
+  const requiredKeys = ["apiKey", "authDomain", "projectId", "storageBucket", "messagingSenderId", "appId"];
+  const missing = requiredKeys.filter(key => {
+    const value = firebaseConfig[key];
+    return !value || value.startsWith("TODO_");
+  });
+
+  if (missing.length > 0) {
+    console.warn(
+      `[Auth] Firebase configuration incomplete. Missing or placeholder values for: ${missing.join(", ")}. ` +
+      "Update services/auth.js with your Firebase config from https://console.firebase.google.com/"
+    );
+    return false;
+  }
+  return true;
 };
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+
+// Warn if config is incomplete
+if (typeof window !== "undefined") {
+  validateFirebaseConfig();
+}
 
 /**
  * Sign in with email and password
@@ -68,23 +90,27 @@ export const signUpWithEmail = async (email, password) => {
 
 /**
  * Sign in with Google
- * Demo implementation - in production, use expo-auth-session
+ * TODO: Implement full Google OAuth flow using expo-auth-session
+ * Current implementation throws an error to prevent silent mock usage
+ *
+ * Implementation steps:
+ * 1. Install: npm install expo-auth-session expo-web-browser
+ * 2. Get Google OAuth credentials from https://console.cloud.google.com/
+ * 3. Configure expo-auth-session with your clientId
+ * 4. Implement proper OAuth flow with token exchange
+ * 5. Exchange token with Firebase signInWithCredential()
+ *
  * @returns {Promise<User>}
+ * @throws {Error} Until proper OAuth flow is implemented
  */
 export const signInWithGoogle = async () => {
-  try {
-    // In production, implement full Google OAuth flow
-    console.warn("[Auth] Google sign-in requires OAuth setup");
-    // For now, create a demo user
-    return {
-      uid: "demo_google_" + Date.now(),
-      email: "demo@gmail.com",
-      displayName: "Demo User",
-    };
-  } catch (error) {
-    console.error("[Auth] Google sign-in error:", error.message);
-    throw new Error(error.message);
-  }
+  const errorMessage =
+    "[Auth] Google OAuth is not yet configured. " +
+    "To enable Google Sign-In, see the TODO comment in services/auth.js. " +
+    "For now, use email/password authentication instead.";
+
+  console.error(errorMessage);
+  throw new Error(errorMessage);
 };
 
 /**
