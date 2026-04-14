@@ -1,9 +1,7 @@
 /**
  * constants/graphr.js
- * ═══════════════════════════════════════════════════════════════════════════════
  *
  * GraphR App Constants & Configuration
- *
  * Central location for all app-wide constants:
  * • Color palette (education blue, success green, dark mode)
  * • Calculator layouts & modes
@@ -11,16 +9,13 @@
  * • Utility functions for grading, formatting
  * • Subscription tier definitions
  * • Calculator button configurations
- *
  * Keep everything synchronized. One source of truth.
- *
  * Designed by Pawan K Jajoo
  */
 
-// ─────────────────────────────────────────────────────────────────────────────
 // COLOR PALETTE
 // Education-focused design: blue (#1a73e8), green (#0f9d58), dark backgrounds
-// ─────────────────────────────────────────────────────────────────────────────
+// Extracted from GraphR_Demo.html CSS color scheme
 export const COLORS = {
   // Primary branding
   primary: "#1a73e8",           // Education blue - primary CTA, highlights
@@ -40,14 +35,12 @@ export const COLORS = {
 
   // UI elements
   border: "#373737",            // Border color
-  input: "#2a2a2a",             // Input background
+  input: "#1a1a1a",             // Input background
   shadow: "rgba(0, 0, 0, 0.3)", // Shadow color
 };
 
-// ─────────────────────────────────────────────────────────────────────────────
 // SUBSCRIPTION TIERS
 // Free, Pro, School (district-level)
-// ─────────────────────────────────────────────────────────────────────────────
 export const SUBSCRIPTION_TIERS = {
   free: {
     name: "Free",
@@ -78,10 +71,8 @@ export const SUBSCRIPTION_TIERS = {
   },
 };
 
-// ─────────────────────────────────────────────────────────────────────────────
 // CALCULATOR LAYOUTS
 // Basic: 12 buttons, Scientific: 20+ buttons, Graphing: equation input + graph
-// ─────────────────────────────────────────────────────────────────────────────
 export const CALCULATOR_BUTTONS = {
   basic: [
     ["7", "8", "9", "/"],
@@ -100,10 +91,8 @@ export const CALCULATOR_BUTTONS = {
   ],
 };
 
-// ─────────────────────────────────────────────────────────────────────────────
 // DEMO CLASSROOMS
 // Sample data for development and demos
-// ─────────────────────────────────────────────────────────────────────────────
 export const INITIAL_CLASSROOMS = [
   {
     id: "class_001",
@@ -134,10 +123,8 @@ export const INITIAL_CLASSROOMS = [
   },
 ];
 
-// ─────────────────────────────────────────────────────────────────────────────
 // DEMO EXAMS
 // Sample exams for classrooms
-// ─────────────────────────────────────────────────────────────────────────────
 export const INITIAL_EXAMS = [
   {
     id: "exam_001",
@@ -179,10 +166,8 @@ export const INITIAL_EXAMS = [
   },
 ];
 
-// ─────────────────────────────────────────────────────────────────────────────
 // DEMO STUDENTS
 // Sample student data
-// ─────────────────────────────────────────────────────────────────────────────
 export const INITIAL_STUDENTS = [
   {
     id: "student_001",
@@ -204,10 +189,8 @@ export const INITIAL_STUDENTS = [
   },
 ];
 
-// ─────────────────────────────────────────────────────────────────────────────
 // UTILITY FUNCTIONS
 // Formatting, grading, calculations
-// ─────────────────────────────────────────────────────────────────────────────
 
 /**
  * Format a score with points and percentage
@@ -244,11 +227,11 @@ export const getGradeColor = (grade) => {
     case "A":
       return COLORS.success;
     case "B":
-      return "#6fa144";
+      return "";
     case "C":
       return COLORS.warning;
     case "D":
-      return "#d97f1d";
+      return "";
     case "F":
       return COLORS.error;
     default:
@@ -304,13 +287,11 @@ export const calculateWeightedScore = (results) => {
   return totalWeight > 0 ? Math.round(weightedSum / totalWeight) : 0;
 };
 
-// ─────────────────────────────────────────────────────────────────────────────
 // CALCULATOR OPERATIONS
 // Core mathematical functions
-// ─────────────────────────────────────────────────────────────────────────────
 
 /**
- * Evaluate a basic mathematical expression
+ * Evaluate a basic mathematical expression using a safe recursive descent parser
  * @param {string} expression - Math expression (e.g., "2+3*4")
  * @returns {number} Result of calculation
  */
@@ -322,10 +303,55 @@ export const evaluateExpression = (expression) => {
     // Replace x with * for multiplication
     expression = expression.replace(/x/g, "*");
 
-    // Use Function constructor for safe evaluation
-    // Note: In production, use a safer math parser library
-    const result = Function('"use strict"; return (' + expression + ")")();
-    return result;
+    // Simple recursive descent parser - safe, no eval()
+    let index = 0;
+
+    const parseNumber = () => {
+      let number = '';
+      while (index < expression.length && /[0-9.]/.test(expression[index])) {
+        number += expression[index];
+        index++;
+      }
+      return parseFloat(number) || 0;
+    };
+
+    const parseFactor = () => {
+      if (expression[index] === '(') {
+        index++; // skip '('
+        const result = parseExpression();
+        index++; // skip ')'
+        return result;
+      }
+      if (expression[index] === '-') {
+        index++;
+        return -parseFactor();
+      }
+      return parseNumber();
+    };
+
+    const parseTerm = () => {
+      let result = parseFactor();
+      while (index < expression.length && (expression[index] === '*' || expression[index] === '/')) {
+        const op = expression[index];
+        index++;
+        const right = parseFactor();
+        result = op === '*' ? result * right : result / right;
+      }
+      return result;
+    };
+
+    const parseExpression = () => {
+      let result = parseTerm();
+      while (index < expression.length && (expression[index] === '+' || expression[index] === '-')) {
+        const op = expression[index];
+        index++;
+        const right = parseTerm();
+        result = op === '+' ? result + right : result - right;
+      }
+      return result;
+    };
+
+    return parseExpression();
   } catch (error) {
     return NaN;
   }
@@ -344,13 +370,11 @@ export const formatNumber = (num) => {
   return parseFloat(num.toFixed(6)).toString();
 };
 
-// ─────────────────────────────────────────────────────────────────────────────
 // APP CONFIGURATION
-// ─────────────────────────────────────────────────────────────────────────────
 
 export const APP_CONFIG = {
   name: "GraphR",
-  tagline: "#CalculatingTheFuture",
+  tagline: "",
   company: "GraphR",
   version: "1.0.0",
   copyrightYear: 2026,
@@ -359,9 +383,7 @@ export const APP_CONFIG = {
   termsUrl: "https://graphr.app/terms",
 };
 
-// ─────────────────────────────────────────────────────────────────────────────
 // EXAM MODE SETTINGS
-// ─────────────────────────────────────────────────────────────────────────────
 
 export const EXAM_MODE_CONFIG = {
   // Detect if student exits exam (switches to different app)
@@ -378,10 +400,8 @@ export const EXAM_MODE_CONFIG = {
   maxViolations: 5,
 };
 
-// ─────────────────────────────────────────────────────────────────────────────
 // IAP PRODUCT CONFIGURATION
 // Must match App Store Connect & Google Play exactly
-// ─────────────────────────────────────────────────────────────────────────────
 export const IAP_PRODUCT_IDS = [
   "com.graphrapp.graphr.pro_monthly",
   "com.graphrapp.graphr.pro_annual",
