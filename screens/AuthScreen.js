@@ -1,15 +1,12 @@
-/**
+/*
  * screens/AuthScreen.js
- * ═══════════════════════════════════════════════════════════════════════════════
  *
  * Authentication Screen - Login & Role Selection
- *
  * Handles user login with role selection:
  * • Login with email/password or Google SSO
  * • Choose role: Student, Teacher, or Admin
  * • Firebase authentication integration
  * • Sign up flow for new users
- *
  * The gateway to GraphR. Security and accessibility in one screen.
  */
 
@@ -74,7 +71,7 @@ export default function AuthScreen({ onAuthSuccess, showToast }) {
       <View style={styles.header}>
         <Text style={styles.icon}>🧮</Text>
         <Text style={styles.title}>GraphR</Text>
-        <Text style={styles.subtitle}>#CalculatingTheFuture</Text>
+        <Text style={styles.subtitle}></Text>
       </View>
 
       {/* Role Selection */}
