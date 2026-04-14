@@ -1,16 +1,13 @@
-/**
+/*
  * screens/ClassroomScreen.js
- * ═══════════════════════════════════════════════════════════════════════════════
  *
  * Classroom Screen - Join & Manage Classrooms
- *
  * Classroom features:
  * • Browse available classrooms
  * • Join classroom with code
  * • View classroom members
  * • Send messages to teacher
  * • View class announcements
- *
  * Connect with your teachers and classmates. Build community.
  */
 
