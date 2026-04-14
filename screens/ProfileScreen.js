@@ -1,16 +1,13 @@
-/**
+/*
  * screens/ProfileScreen.js
- * ═══════════════════════════════════════════════════════════════════════════════
  *
  * Profile Screen - User Profile & Settings
- *
  * User profile management:
  * • Display user information
  * • Subscription status & upgrade
  * • Theme/skin selection
  * • Calculator preferences
  * • Sign out
- *
  * Your identity in GraphR. Customize your experience.
  */
 
