@@ -1,192 +1,319 @@
-# GraphR - Calculating the Future
+# GraphR
 
 **#CalculatingTheFuture**
 
-The world's first intuitive, all-in-one calculator app for education. Designed to make phones educational tools rather than distractions in the classroom.
+What if smartphones weren't a distraction but a solution for classrooms, students and administrators? GraphR is an intuitive, all-in-one calculator app designed to make phones educational tools rather than distractions in the classroom.
 
 ## What is GraphR?
 
-GraphR is a mobile application built for students and teachers that combines:
+GraphR is a React Native mobile app and web application built for students, teachers, and administrators. It combines:
 
-- **All-in-one calculator**: Basic, scientific, and graphing modes in one app
-- **Secure exam mode**: Patent-based app-switch detection ensures fair testing
-- **Real-time analytics**: Track student progress with learning insights
-- **Classroom management**: Teachers can create exams, monitor assessments, and grade in real-time
+- **Multi-mode Calculator**: Basic, scientific, and graphing capabilities
+- **Secure Exam Proctoring**: Patent-based app-switch detection for fair testing without compromising student safety
+- **Real-time Classroom Management**: Teachers monitor assessments and provide instant feedback
+- **Learning Analytics**: Student performance tracking and analysis
+- **In-app Purchases**: Subscription tiers (Free, Pro, School)
 
-## Key Features
+## Features
 
-### For Students
+### Student Features
 
-- Multi-mode calculator (Basic, Scientific, Graphing)
-- Take secure exams with proctoring
-- View real-time feedback and grades
-- Track your learning progress
-- Join classrooms and access materials
+- Multi-mode calculator (basic, scientific, graphing)
+- Take proctored exams with violation detection
+- Real-time grade feedback and performance analytics
+- Join classrooms using enrollment codes
+- View learning progress and trends
+- User profile management with avatar support
+- Push notifications for exam updates and grades
 
-### For Teachers
+### Teacher Features
 
-- Create and manage exams
+- Create exams with custom questions and restrictions
 - Real-time exam monitoring with violation alerts
-- Instant grading and analytics
-- Monitor student performance across classrooms
-- Generate performance reports
+- Instant grading (auto and manual)
+- View student performance analytics
+- Manage classroom rosters
+- Grade book with weighted scoring
+- Custom calculator mode restrictions per exam
 
-## The Patent
+### Exam Proctoring (Patent-Based)
 
-GraphR implements a unique patent-based proctoring system:
+- App-switch detection during exams in real-time
+- Violation logging with timestamps
+- Teacher notifications of potential cheating
+- Emergency calls always allowed (no device lockdown)
+- No access to device content or private data
+- Automatic violation threshold tracking
 
-- Detects when students switch apps during exams
-- Notifies teachers in real-time of violations
-- Logs all violations with timestamps
-- Allows emergency calls (student safety first)
-- Never locks the device
+## Technology Stack
 
-This approach balances academic integrity with student safety and privacy.
+### Frontend
+- React Native 0.76.9
+- Expo 52.0.0 (managed build & deployment)
+- React Hooks for state management
+- React Navigation for tab/stack navigation
+- Inter font family
 
-## Getting Started
+### Backend & Services
+- Firebase Authentication (email/password + Google SSO)
+- Firestore (real-time database for classrooms, exams, results)
+- Firebase Storage (media storage)
+- Firebase Cloud Messaging (push notifications)
+- Expo Notifications (local and remote)
+
+### Cross-Platform
+- EAS (Expo Application Services) for iOS/Android builds
+- React Native IAP for in-app purchases
+- Expo Haptics for vibration feedback
+
+### Web Platform
+- Vanilla JavaScript (no framework)
+- HTML5 Canvas for graphing
+- localStorage for offline data
+- Firebase REST API for backend
+
+## Quick Start
 
 ### Prerequisites
 
-- Node.js 16+ and npm
+- Node.js 16+ and npm 8+
 - Expo CLI (`npm install -g expo-cli`)
-- iOS or Android device/emulator
-- Firebase account with project
+- Firebase account with active project
+- iOS/Android device or emulator for testing
 
-### Installation
+### Setup
 
 ```bash
+# Clone repository
+git clone https://github.com/pawankjajoo/GraphR-App.git
+cd GraphR-App
+
 # Install dependencies
 npm install
 
-# Set environment variables
-# Update services/firebase.js with your Firebase credentials
+# Configure Firebase
+# Edit services/firebase.js with your credentials
 
 # Start development server
 npm start
 
-# Run on iOS
-npm run ios
-
-# Run on Android
-npm run android
-
-# Run on web
-npm run web
+# Run on device/emulator
+# iOS: i   or npm run ios
+# Android: a   or npm run android
+# Web: w   or npm run web
 ```
+
+### With Expo Go
+
+Easiest development approach:
+
+1. Download Expo Go (iOS or Android)
+2. Run `npm start`
+3. Scan QR code with Expo Go app
+
+## Building for Production
+
+### iOS
+
+```bash
+eas build --platform ios --profile production
+```
+
+Then submit using:
+
+```bash
+eas submit --platform ios
+```
+
+Requires Apple Developer account with Team ID configured in eas.json.
+
+### Android
+
+```bash
+eas build --platform android --profile production
+```
+
+Then submit using:
+
+```bash
+eas submit --platform android
+```
+
+Requires Google Play service account key configured in eas.json.
 
 ## Project Structure
 
 ```
-GraphR App Production/
-├── App.js                    # Main app orchestrator
-├── app.json                  # Expo configuration
-├── eas.json                  # EAS build configuration
-├── package.json              # Dependencies
-├── constants/
-│   └── graphr.js            # App constants & utilities
-├── screens/                  # 12+ screen components
-│   ├── SplashScreen.js
-│   ├── AuthScreen.js
-│   ├── CalculatorScreen.js
-│   ├── GraphingScreen.js
-│   ├── ExamModeScreen.js
-│   ├── ExamListScreen.js
-│   ├── ClassroomScreen.js
-│   ├── TeacherDashboardScreen.js
-│   ├── GradeBookScreen.js
-│   ├── AnalyticsScreen.js
-│   ├── ProfileScreen.js
-│   └── SettingsScreen.js
-├── services/                 # 7 services
-│   ├── auth.js              # Firebase authentication
-│   ├── firebase.js          # Firebase initialization
-│   ├── firestoreService.js  # Database operations
-│   ├── notifications.js     # Push notifications
-│   ├── examMonitor.js       # Patent proctoring (patent)
-│   ├── iap.js               # In-app purchases
-│   └── analyticsService.js  # Learning analytics
-├── legal/
-│   ├── privacy-policy.html
-│   └── terms-of-service.html
-├── firestore.rules          # Firestore security rules
-├── storage.rules            # Firebase storage rules
-└── SUBMIT_GUIDE.md          # App Store submission guide
+GraphR-App/
+âââ App.js                    # Main entry point, auth gate, tab navigation
+âââ app.json                  # Expo configuration
+âââ eas.json                  # Build and deployment config
+âââ package.json              # Dependencies
+âââ firestore.rules           # Firestore security rules
+âââ storage.rules             # Storage security rules
+âââ GraphR_Demo.html          # Web-based demo with calculator
+â
+âââ constants/
+â   âââ graphr.js             # Colors, layouts, demo data, utilities
+â
+âââ screens/                  # React Native components
+â   âââ AuthScreen.js         # Login/signup with role selection
+â   âââ SplashScreen.js       # App startup screen
+â   âââ CalculatorScreen.js   # Multi-mode calculator UI
+â   âââ GraphingScreen.js     # Graphing calculator
+â   âââ ExamModeScreen.js     # Exam taking interface
+â   âââ ExamListScreen.js     # Browse available exams
+â   âââ ClassroomScreen.js    # Join classrooms
+â   âââ TeacherDashboardScreen.js  # Exam monitoring (teachers)
+â   âââ GradeBookScreen.js    # Grade management
+â   âââ AnalyticsScreen.js    # Performance analytics
+â   âââ ProfileScreen.js      # User profile, subscriptions
+â   âââ SettingsScreen.js     # App preferences
+â
+âââ services/                 # Business logic
+â   âââ firebase.js           # Firebase initialization
+â   âââ auth.js               # Authentication (email, Google SSO)
+â   âââ firestoreService.js   # Database operations
+â   âââ notifications.js      # Push notifications
+â   âââ examMonitor.js        # App-switch detection (proctoring)
+â   âââ iap.js                # In-app purchases
+â   âââ analyticsService.js   # Learning analytics
+â
+âââ web/                      # Web implementation
+â   âââ index.html            # Web interface
+â   âââ js/
+â   â   âââ app.js            # Main app logic
+â   â   âââ calculator.js     # Calculator engine
+â   â   âââ graphing.js       # Graphing functions
+â   â   âââ exam.js           # Exam interface
+â   â   âââ classroom.js      # Classroom features
+â   â   âââ auth.js           # Authentication
+â   â   âââ proctoring.js     # Violation detection
+â   âââ styles/
+â       âââ main.css
+â       âââ calculator.css
+â       âââ exam.css
+â       âââ classroom.css
+â
+âââ archive/                  # Historical materials
+â   âââ 2016-web-archive/     # Original website (2016)
+â   âââ 2016-2021-github-archive/  # Early pitch decks, patents
+â
+âââ Documentation
+    âââ README.md             # This file
+    âââ MOBILE_README.md      # Platform-specific setup
+    âââ TECHNICAL_SUMMARY.md  # Architecture details
+    âââ PROJECT_SUMMARY.md    # Feature overview
+    âââ LAUNCH_PLAN.md        # Release strategy
+    âââ SUBMIT_GUIDE.md       # App Store submission
 ```
 
-## Technology Stack
+## Firebase Configuration
 
-- **Frontend**: React Native with Expo
-- **Backend**: Firebase (Auth, Firestore, Storage)
-- **Payments**: React Native IAP (App Store + Google Play)
-- **Notifications**: Expo Notifications
-- **State Management**: React Hooks
+### Setup
 
-## Configuration
+1. Create Firebase project at https://console.firebase.google.com
+2. Enable services:
+   - Authentication (Email/Password, Google Sign-in)
+   - Firestore Database (production mode)
+   - Storage (for media)
+   - Cloud Messaging (for notifications)
 
-### Firebase Setup
+3. Add credentials to `services/firebase.js`:
 
-1. Create a Firebase project at firebase.google.com
-2. Update `services/firebase.js` with your credentials
-3. Deploy security rules:
+```javascript
+export const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "your-project.firebaseapp.com",
+  projectId: "your-project-id",
+  storageBucket: "your-project.appspot.com",
+  messagingSenderId: "YOUR_SENDER_ID",
+  appId: "YOUR_APP_ID"
+};
+```
+
+### Deploy Security Rules
 
 ```bash
+firebase login
 firebase deploy --only firestore:rules,storage
 ```
 
-### App Store Submission
+## Firestore Data Structure
 
-See `SUBMIT_GUIDE.md` for detailed instructions on submitting to:
-- Apple App Store
-- Google Play Store
+- `users/{userId}` - User profiles and settings
+- `classrooms/{classroomId}` - Classroom metadata (teacher, students, code)
+- `exams/{examId}` - Exam definitions (questions, duration, restrictions)
+- `examResults/{resultId}` - Student exam responses and grades
+- `examViolations/{violationId}` - App-switch violations log
+- `calculatorHistory/{userId}` - Student calculator usage for analytics
+- `classroomEnrollments/{enrollmentId}` - Enrollment records
+- `subscriptions/{userId}` - Subscription status
 
-## Build & Deployment
+## In-App Purchase Setup
 
-### Development Build
+Configure App Store Connect and Google Play with product IDs:
+- `com.graphrapp.graphr.pro_monthly` - Monthly subscription ($4.99)
+- `com.graphrapp.graphr.pro_annual` - Annual subscription ($49.99)
 
-```bash
-eas build --platform ios --profile development
-eas build --platform android --profile development
-```
+Update eas.json with Apple Team ID and Google Play service account key for submission.
 
-### Production Build
+## Features & Implementation Status
 
-```bash
-# iOS
-npm run build:ios
-npm run submit:ios
+| Feature | Status | Notes |
+|---------|--------|-------|
+| Basic Calculator | Complete | All arithmetic operations |
+| Scientific Mode | Complete | Trig, log, ln, x^2, sqrt, etc. |
+| Graphing | Complete | Real-time equation visualization |
+| Student Login | Complete | Email/password + Google SSO |
+| Teacher Login | Complete | Role-based dashboard |
+| Create Exams | Complete | Teacher-only feature |
+| Take Exams | Complete | Timer and violation detection |
+| App-Switch Detection | Complete | Patent-based proctoring |
+| Real-time Grading | Complete | Automatic score calculation |
+| Classroom Join | Complete | Code-based enrollment |
+| Analytics | Complete | Performance trends and metrics |
+| Grade Book | Complete | Teacher view of all results |
+| Push Notifications | Complete | Exam alerts and grade updates |
+| In-App Purchases | Complete | Free/Pro/School tiers |
+| Web Demo | Complete | GraphR_Demo.html |
 
-# Android
-npm run build:android
-npm run submit:android
-```
+## Web Demo
+
+Open `GraphR_Demo.html` in a browser for an interactive demo. Supports:
+- Full calculator functionality (basic, scientific)
+- Simulated exam taking
+- Demo classroom management
+- Analytics visualization
+
+No setup required - runs entirely in browser with localStorage.
 
 ## COPPA Compliance
 
-GraphR is designed for educational use with minors. All implementations comply with the Children's Online Privacy Protection Act (COPPA):
+App complies with Children's Online Privacy Protection Act:
+- No tracking or behavioral analytics
+- Parental consent required for minors
+- School district data control
+- No third-party advertising
+- Transparent data policies
 
-- No collection of personal information without parental consent
-- No advertising or behavioral tracking
-- School district control over data
-- Transparent privacy practices
+## Licensing & Attributions
 
-## Support
+- **License**: Proprietary (GraphR App)
+- **Patents**: App-switch detection patent pending
+- **Trademark**: GraphR - #CalculatingTheFuture
+- **Founder**: Pawan K Jajoo
+- **Repository**: https://github.com/pawankjajoo/GraphR-App
 
-For issues, feature requests, or questions:
-- Email: support@graphr.app
-- Website: graphr.app
+## Known Issues & Limitations
 
-## License
+See TECHNICAL_SUMMARY.md for implementation status of advanced features.
 
-This project is proprietary software by GraphR App.
+## Support & Documentation
 
-## About
-
-**GraphR** - Calculating the Future of Education
-- Tagline: #CalculatingTheFuture
-- Phone bans endanger student safety and harm learning. GraphR is the solution.
-
----
-
-Built with passion for education. Every line of code serves students.
-
-Author: Pawan K Jajoo
+- **Website**: graphr.app
+- **Email**: support@graphr.app
+- **Mobile Setup**: MOBILE_README.md
+- **Submission**: SUBMIT_GUIDE.md
+- **Architecture**: TECHNICAL_SUMMARY.md
+- **Features**: PROJECT_SUMMARY.md
