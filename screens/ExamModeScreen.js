@@ -1,9 +1,7 @@
-/**
+/*
  * screens/ExamModeScreen.js
- * ═══════════════════════════════════════════════════════════════════════════════
  *
  * Exam Mode Screen - Secure Testing Environment
- *
  * Patent implementation of exam proctoring:
  * • Timer countdown (restricts to exam duration)
  * • Real-time app-switch detection
@@ -11,7 +9,6 @@
  * • Student cannot exit without teacher approval
  * • Logs all calculator operations
  * • Teacher gets live violation notifications
- *
  * Safety and security. Preventing cheating while protecting students.
  */
 
@@ -29,21 +26,31 @@ export default function ExamModeScreen({
   const [answers, setAnswers] = useState({});
   const [showExitConfirm, setShowExitConfirm] = useState(false);
   const timerInterval = useRef(null);
+  const isMounted = useRef(true);
 
-  // Timer
+  // Timer - with proper cleanup to prevent race conditions
   useEffect(() => {
+    isMounted.current = true;
+
     timerInterval.current = setInterval(() => {
+      if (!isMounted.current) return;
+
       setTimeRemaining((prev) => {
         if (prev <= 1) {
-          clearInterval(timerInterval.current);
-          handleAutoSubmit();
+          if (isMounted.current) {
+            clearInterval(timerInterval.current);
+            handleAutoSubmit();
+          }
           return 0;
         }
         return prev - 1;
       });
     }, 1000);
 
-    return () => clearInterval(timerInterval.current);
+    return () => {
+      isMounted.current = false;
+      clearInterval(timerInterval.current);
+    };
   }, []);
 
   // Prevent back button
