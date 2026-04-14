@@ -1,16 +1,13 @@
-/**
+/*
  * screens/GradeBookScreen.js
- * ═══════════════════════════════════════════════════════════════════════════════
  *
  * Grade Book Screen - Instant Grading & Results
- *
  * Displays exam results:
  * • Instant grading after exam submission
  * • Performance analysis
  * • Question-by-question breakdown
  * • Weighted/unweighted scoring
  * • Historical results tracking
- *
  * See your progress. Understand your strengths. Identify areas for growth.
  */
 
