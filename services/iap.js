@@ -1,15 +1,12 @@
-/**
+/*
  * services/iap.js
- * ═══════════════════════════════════════════════════════════════════════════════
  *
  * In-App Purchase Service
- *
  * Handles all IAP operations:
  * • Product catalog loading
  * • Purchase processing
  * • Receipt validation
  * • Subscription management
- *
  * Monetize responsibly. Student value first.
  */
 
@@ -21,14 +18,14 @@ let iapInitialized = false;
 let purchaseSuccessCallback = null;
 let purchaseErrorCallback = null;
 
-/**
+/*
  * Initialize IAP service
  * @param {object} callbacks - { onPurchaseSuccess, onPurchaseError }
  * @returns {Promise<void>}
  */
 export const init = async (callbacks = {}) => {
   try {
-    // Store callbacks
+    
     purchaseSuccessCallback = callbacks.onPurchaseSuccess;
     purchaseErrorCallback = callbacks.onPurchaseError;
 
@@ -46,7 +43,7 @@ export const init = async (callbacks = {}) => {
   }
 };
 
-/**
+/*
  * Get available products
  * @returns {Promise<array>}
  */
@@ -76,7 +73,7 @@ export const getStoreProducts = async () => {
   }
 };
 
-/**
+/*
  * Purchase a product
  * @param {string} productId
  * @returns {Promise<void>}
@@ -93,7 +90,6 @@ export const purchase = async (productId) => {
       throw new Error("Product not found");
     }
 
-    // Initiate purchase
     await IAP.requestPurchase({
       sku: productId,
     });
@@ -108,7 +104,7 @@ export const purchase = async (productId) => {
   }
 };
 
-/**
+/*
  * Setup purchase listeners
  * @private
  */
@@ -132,7 +128,6 @@ const setupPurchaseListeners = () => {
         });
       }
 
-      // Finish transaction
       IAP.finishTransaction({ purchase });
     }
   });
@@ -147,7 +142,7 @@ const setupPurchaseListeners = () => {
   });
 };
 
-/**
+/*
  * Validate receipt
  * In production, send to your backend for server-side validation
  * @param {string} receipt
@@ -168,7 +163,7 @@ const validateReceipt = async (receipt) => {
   }
 };
 
-/**
+/*
  * Restore purchases
  * @returns {Promise<void>}
  */
@@ -188,7 +183,7 @@ export const restorePurchases = async () => {
   }
 };
 
-/**
+/*
  * Clean up IAP
  * @returns {Promise<void>}
  */
@@ -202,7 +197,7 @@ export const destroy = async () => {
   }
 };
 
-/**
+/*
  * Get subscription info
  * @param {string} productId
  * @returns {object}
