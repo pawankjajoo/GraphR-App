@@ -1,55 +1,113 @@
-/**
+/*
  * screens/AnalyticsScreen.js
- * ═══════════════════════════════════════════════════════════════════════════════
  *
  * Analytics Screen - Real-Time Learning Analytics
- *
- * Displays comprehensive learning analytics:
+ * Displays  learning analytics:
  * • Performance trends over time
  * • Skill mastery breakdown
  * • Comparative analytics (student vs class average)
  * • Time-on-task analysis
  * • Calculator usage patterns
- *
  * Data-driven insights. Personalized learning recommendations.
  */
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   View, Text, FlatList, StyleSheet, ScrollView,
 } from "react-native";
 import { COLORS } from "../constants/graphr";
+import {
+  calculateAverageScore,
+  detectTrend,
+  calculateSkillMastery,
+  generateRecommendations,
+  calculateClassAverage,
+  identifyStrugglingStudents,
+} from "../services/analyticsService";
 
 export default function AnalyticsScreen({ userRole, showToast }) {
-  // Sample analytics data
-  const studentAnalytics = {
-    averageScore: 87,
-    trend: "up",
-    skillsData: [
-      { skill: "Algebra", mastery: 85 },
-      { skill: "Geometry", mastery: 78 },
-      { skill: "Trigonometry", mastery: 72 },
-      { skill: "Calculus", mastery: 68 },
-    ],
-    recentActivity: [
-      { date: "Today", event: "Completed Algebra Midterm", score: 85 },
-      { date: "Mar 20", event: "Completed Geometry Quiz", score: 92 },
-      { date: "Mar 15", event: "Practice Session", duration: "45 min" },
-    ],
-  };
+  const [studentAnalytics, setStudentAnalytics] = useState(null);
+  const [classAnalytics, setClassAnalytics] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  const classAnalytics = {
-    averageScore: 82,
-    studentCount: 28,
-    topPerformer: "Jordan Lee (92%)",
-    classStrengths: [
-      { skill: "Basic Arithmetic", avg: 89 },
-      { skill: "Fractions", avg: 85 },
-    ],
-    classWeaknesses: [
-      { skill: "Calculus", avg: 65 },
-      { skill: "Complex Numbers", avg: 62 },
-    ],
+  // Fetch analytics data on mount
+  useEffect(() => {
+    fetchAnalytics();
+  }, [userRole]);
+
+  const fetchAnalytics = async () => {
+    try {
+      setLoading(true);
+
+      // TODO: Fetch actual exam results from Firestore
+      // const studentResults = await getStudentExamResults(userId);
+      // const classResults = await getClassExamResults(classroomId);
+
+      // Mock data for now - replace with real Firestore queries
+      const mockStudentResults = [
+        { skill: "Algebra", score: 85, total: 100, skillCategory: "Algebra", timeSpentSeconds: 2700 },
+        { skill: "Geometry", score: 78, total: 100, skillCategory: "Geometry", timeSpentSeconds: 1800 },
+        { skill: "Trigonometry", score: 72, total: 100, skillCategory: "Trigonometry", timeSpentSeconds: 3600 },
+        { skill: "Calculus", score: 68, total: 100, skillCategory: "Calculus", timeSpentSeconds: 2400 },
+      ];
+
+      if (userRole === "student") {
+        // Calculate student analytics
+        const averageScore = calculateAverageScore(mockStudentResults);
+        const trend = detectTrend(mockStudentResults);
+        const skillMastery = calculateSkillMastery(mockStudentResults);
+        const recommendations = generateRecommendations(mockStudentResults, skillMastery);
+
+        setStudentAnalytics({
+          averageScore,
+          trend,
+          skillsData: Object.entries(skillMastery).map(([skill, mastery]) => ({
+            skill,
+            mastery,
+          })),
+          recentActivity: [
+            { date: "Today", event: "Completed Algebra Midterm", score: 85 },
+            { date: "Mar 20", event: "Completed Geometry Quiz", score: 92 },
+            { date: "Mar 15", event: "Practice Session", duration: "45 min" },
+          ],
+          recommendations,
+        });
+      } else {
+        // Calculate class analytics
+        // TODO: Fetch actual class results from Firestore
+        const mockClassResults = [
+          ...mockStudentResults,
+          { score: 92, total: 100, skillCategory: "Algebra", timeSpentSeconds: 2400 },
+          { score: 65, total: 100, skillCategory: "Calculus", timeSpentSeconds: 3600 },
+          { score: 62, total: 100, skillCategory: "Complex Numbers", timeSpentSeconds: 4200 },
+        ];
+
+        const classAverage = calculateClassAverage(mockClassResults);
+        const strugglingStudents = identifyStrugglingStudents(mockClassResults);
+        const skillMastery = calculateSkillMastery(mockClassResults);
+
+        setClassAnalytics({
+          averageScore: classAverage,
+          studentCount: 28,
+          topPerformer: "Jordan Lee (92%)",
+          classStrengths: [
+            { skill: "Basic Arithmetic", avg: 89 },
+            { skill: "Fractions", avg: 85 },
+          ],
+          classWeaknesses: [
+            { skill: "Calculus", avg: 65 },
+            { skill: "Complex Numbers", avg: 62 },
+          ],
+          strugglingStudents,
+        });
+      }
+
+      setLoading(false);
+    } catch (error) {
+      console.error("[AnalyticsScreen] Error fetching analytics:", error);
+      showToast("Error loading analytics data");
+      setLoading(false);
+    }
   };
 
   const renderSkillItem = ({ item }) => (
