@@ -1,14 +1,11 @@
-/**
+/*
  * screens/SplashScreen.js
- * ═══════════════════════════════════════════════════════════════════════════════
  *
  * Splash Screen - First impression
- *
  * Displays the GraphR brand with animated elements:
- * • Tagline: #CalculatingTheFuture
+ * • Tagline:
  * • Smooth fade-in effect
  * • Auto-dismiss after 3 seconds
- *
  * This is where the user first meets the app. Make it count.
  */
 
@@ -49,11 +46,11 @@ export default function SplashScreen({ onDone }) {
         <Text style={styles.icon}>🧮</Text>
 
         {/* Main Tagline */}
-        <Text style={styles.tagline}>#CalculatingTheFuture</Text>
+        <Text style={styles.tagline}>GraphR</Text>
 
         {/* Subtitle */}
         <Text style={styles.subtitle}>
-          The world's first intuitive, all-in-one calculator app for education
+          The all-in-one calculator app for education
         </Text>
       </Animated.View>
     </View>
