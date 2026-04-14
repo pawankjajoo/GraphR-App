@@ -62,12 +62,16 @@ service cloud.firestore {
     }
 
     // ── Exam Violations (App Switch Detection) ──────────────────────────────
+    // Only the exam taker (student) or Cloud Functions can create violations
     // Teachers can read violations for their exams
-    // System (Cloud Functions) writes violations
+    // Violations are immutable
     match /examViolations/{violationId} {
       allow read: if request.auth != null && exists(/databases/$(database)/documents/exams/$(resource.data.examId)) &&
         get(/databases/$(database)/documents/exams/$(resource.data.examId)).data.teacherId == request.auth.uid;
-      allow create: if request.auth != null;
+      allow create: if request.auth != null && (
+        request.auth.uid == request.resource.data.studentId ||
+        request.auth.token.firebase.claims.isCloudFunction == true
+      );
       allow update: if false;
       allow delete: if false;
     }
