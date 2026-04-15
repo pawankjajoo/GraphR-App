@@ -35,7 +35,7 @@ Development - architecture complete, Firebase config needs setup, some features 
 
 ## License
 
-Proprietary - Pushstart LLC
+Proprietary - Pawan K Jajoo
 
 ## Author
 
